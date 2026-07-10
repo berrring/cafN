@@ -1,0 +1,211 @@
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { MapPin, Phone, Mail, ArrowUpRight, CheckCircle2, Heart, Camera } from 'lucide-react';
+import { CAFE_INFO } from '../data/cafeInfo';
+
+export const Footer: React.FC = () => {
+  const [email, setEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email && email.includes('@')) {
+      setSubscribed(true);
+      setEmail('');
+    }
+  };
+
+  return (
+    <footer className="bg-[#150E0C] text-[#EAE3D6] pt-16 pb-12 border-t border-[#33241F]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Main Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-12 border-b border-[#33241F]">
+          {/* Brand & Ethos */}
+          <div className="lg:col-span-4 space-y-5">
+            <div className="space-y-1">
+              <span className="font-serif text-3xl font-normal tracking-tight text-[#FDFBF7]">
+                MORROW
+              </span>
+              <p className="text-xs uppercase tracking-[0.25em] text-[#C76743] font-medium">
+                Coffee &amp; Kitchen · Dorćol
+              </p>
+            </div>
+
+            <p className="text-sm text-[#C1B49F] leading-relaxed max-w-sm">
+              An independent coffee bar and seasonal kitchen rooted in Belgrade's oldest bohemian quarter. Hand-selected single origins, long-fermented wild sourdough, and the timeless art of unhurried conversation.
+            </p>
+
+            <div className="pt-2">
+              <div className="inline-block px-3.5 py-1.5 rounded-full border border-[#47533E] bg-[#242A1F]/60 text-xs text-[#ECF0E8] font-serif italic">
+                “Polako — gde se kafa ne pije u žurbi.”
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 pt-2">
+              {CAFE_INFO.socials.map((social) => (
+                <a
+                  key={social.name}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 rounded-full border border-[#33241F] bg-[#211714] hover:bg-[#C76743] hover:text-white hover:border-[#C76743] text-xs text-[#C1B49F] transition-all duration-200 flex items-center gap-1.5"
+                >
+                  {social.name === 'Instagram' && <Camera className="w-3.5 h-3.5" />}
+                  <span>{social.name}</span>
+                  <ArrowUpRight className="w-3 h-3 opacity-60" />
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Quick Navigation */}
+          <div className="lg:col-span-2 space-y-4">
+            <h4 className="text-xs font-semibold tracking-widest uppercase text-[#FDFBF7]">
+              Navigation
+            </h4>
+            <ul className="space-y-2.5 text-sm text-[#C1B49F]">
+              <li>
+                <Link to="/" className="hover:text-[#FDFBF7] transition-colors">
+                  Home (Početna)
+                </Link>
+              </li>
+              <li>
+                <Link to="/menu" className="hover:text-[#FDFBF7] transition-colors">
+                  Full Menu (Meni)
+                </Link>
+              </li>
+              <li>
+                <Link to="/about" className="hover:text-[#FDFBF7] transition-colors">
+                  Our Story &amp; Ethos
+                </Link>
+              </li>
+              <li>
+                <Link to="/gallery" className="hover:text-[#FDFBF7] transition-colors">
+                  Atmosphere Gallery
+                </Link>
+              </li>
+              <li>
+                <Link to="/reservations" className="hover:text-[#FDFBF7] transition-colors">
+                  Table Reservations
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" className="hover:text-[#FDFBF7] transition-colors">
+                  Location &amp; Inquiries
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Hours & Visiting */}
+          <div className="lg:col-span-3 space-y-4">
+            <h4 className="text-xs font-semibold tracking-widest uppercase text-[#FDFBF7]">
+              Hours &amp; Kitchen
+            </h4>
+            <div className="space-y-3 text-xs text-[#C1B49F]">
+              <div>
+                <p className="font-medium text-[#FDFBF7]">Monday – Friday</p>
+                <p className="text-[#DDD4C6]">Coffee Bar: 07:30 – 21:00</p>
+                <p className="text-[#886959]">Kitchen Pass: 07:30 – 16:30</p>
+              </div>
+              <div>
+                <p className="font-medium text-[#FDFBF7]">Saturday &amp; Sunday</p>
+                <p className="text-[#DDD4C6]">Coffee Bar: 08:30 – 22:00 (Sun till 21:00)</p>
+                <p className="text-[#886959]">Weekend Brunch: 08:30 – 17:00</p>
+              </div>
+              <div className="pt-1 text-[#DDD4C6]">
+                <p className="flex items-start gap-1.5">
+                  <MapPin className="w-3.5 h-3.5 text-[#C76743] shrink-0 mt-0.5" />
+                  <span>{CAFE_INFO.address.street}, Dorćol, Belgrade</span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Dorćol Letters Newsletter */}
+          <div className="lg:col-span-3 space-y-4">
+            <h4 className="text-xs font-semibold tracking-widest uppercase text-[#FDFBF7]">
+              Dorćol Coffee Letters
+            </h4>
+            <p className="text-xs text-[#C1B49F] leading-relaxed">
+              Receive monthly dispatches on seasonal micro-lot arrivals, secret baker's specials, and neighborhood stories from Belgrade.
+            </p>
+
+            {subscribed ? (
+              <div className="p-3.5 rounded-xl bg-[#242A1F] border border-[#47533E] text-xs text-[#ECF0E8] flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>Hvala! You are now subscribed to our fictional newsletter.</span>
+              </div>
+            ) : (
+              <form onSubmit={handleSubscribe} className="space-y-2">
+                <div className="relative">
+                  <input
+                    type="email"
+                    required
+                    placeholder="your.email@domain.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-3.5 py-2.5 rounded-lg bg-[#211714] border border-[#33241F] text-xs text-[#FDFBF7] placeholder-[#664C3F] focus:outline-none focus:border-[#C76743] transition-colors"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full py-2.5 px-4 rounded-lg bg-[#C76743] text-white text-xs font-medium uppercase tracking-wider hover:bg-[#D87C58] transition-colors font-sans"
+                >
+                  Join the List
+                </button>
+              </form>
+            )}
+
+            <div className="text-[11px] text-[#664C3F] space-y-1 pt-1">
+              <p className="flex items-center gap-1.5">
+                <Phone className="w-3 h-3 text-[#5B6B50]" />
+                <span>{CAFE_INFO.contact.phone} (Mock)</span>
+              </p>
+              <p className="flex items-center gap-1.5">
+                <Mail className="w-3 h-3 text-[#5B6B50]" />
+                <span>{CAFE_INFO.contact.email}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Portfolio Concept Legal & Project Disclaimer Banner */}
+        <div className="pt-8 pb-4">
+          <div className="p-4 rounded-xl bg-[#211714]/80 border border-[#33241F] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#C76743]" />
+                <h5 className="text-xs uppercase tracking-wider font-semibold text-[#FDFBF7]">
+                  Portfolio Concept Project Notice
+                </h5>
+              </div>
+              <p className="text-xs text-[#C1B49F] max-w-3xl leading-relaxed">
+                {CAFE_INFO.disclaimerText} No real commercial operations, table bookings, customer tracking, or payments exist. Created with React 19, TypeScript, Vite, and Tailwind CSS.
+              </p>
+            </div>
+            <div className="shrink-0 flex items-center gap-2 text-[11px] text-[#886959]">
+              <span>Made with care</span>
+              <Heart className="w-3 h-3 text-[#C76743] fill-[#C76743]" />
+              <span>for Belgrade's coffee culture</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Credits Bar */}
+        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#664C3F]">
+          <p>© {new Date().getFullYear()} Morrow Coffee &amp; Kitchen. Fictional Portfolio Project.</p>
+          <div className="flex items-center gap-4">
+            <span>Dorćol, Belgrade (11000)</span>
+            <span>·</span>
+            <span>React &amp; TypeScript</span>
+            <span>·</span>
+            <Link to="/about" className="hover:text-[#DDD4C6] underline underline-offset-2">
+              Concept Story
+            </Link>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+};
