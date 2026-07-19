@@ -54,7 +54,7 @@ export const Lightbox: React.FC<LightboxProps> = ({ item, items, onClose, onSele
       {/* Close button */}
       <button
         onClick={onClose}
-        className="absolute top-5 right-5 z-50 p-2.5 rounded-full bg-[#211714] text-[#FDFBF7] hover:bg-[#C76743] transition-colors focus:outline-none focus:ring-2 focus:ring-white"
+        className="absolute top-5 right-5 z-50 p-2.5 rounded-lg bg-[#211714] text-[#FDFBF7] hover:bg-[#C76743] transition-colors focus:outline-none focus:ring-2 focus:ring-white"
         aria-label="Close image lightbox"
       >
         <X className="w-5 h-5" />
@@ -66,7 +66,7 @@ export const Lightbox: React.FC<LightboxProps> = ({ item, items, onClose, onSele
           e.stopPropagation();
           handlePrev();
         }}
-        className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 z-50 p-3 rounded-full bg-[#211714]/80 text-[#FDFBF7] hover:bg-[#C76743] hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-[#C76743]"
+        className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 z-50 p-3 rounded-lg bg-[#211714]/80 text-[#FDFBF7] hover:bg-[#C76743] hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-[#C76743]"
         aria-label="Previous photograph"
       >
         <ChevronLeft className="w-6 h-6" />
@@ -78,7 +78,7 @@ export const Lightbox: React.FC<LightboxProps> = ({ item, items, onClose, onSele
           e.stopPropagation();
           handleNext();
         }}
-        className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 z-50 p-3 rounded-full bg-[#211714]/80 text-[#FDFBF7] hover:bg-[#C76743] hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-[#C76743]"
+        className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 z-50 p-3 rounded-lg bg-[#211714]/80 text-[#FDFBF7] hover:bg-[#C76743] hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-[#C76743]"
         aria-label="Next photograph"
       >
         <ChevronRight className="w-6 h-6" />
@@ -100,17 +100,17 @@ export const Lightbox: React.FC<LightboxProps> = ({ item, items, onClose, onSele
         {/* Caption */}
         <div className="mt-4 text-center max-w-2xl px-4 text-[#FDFBF7]">
           <div className="flex items-center justify-center gap-2 mb-1.5 flex-wrap">
-            <span className="inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#47533E] text-[#ECF0E8]">
+            <span className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded bg-[#47533E] text-[#ECF0E8]">
               <Tag className="w-3 h-3" />
               {item.category}
             </span>
             {item.locationNote && (
-              <span className="inline-flex items-center gap-1 text-[11px] text-[#DDD4C6]">
+              <span className="inline-flex items-center gap-1 text-xs text-[#DDD4C6]">
                 <MapPin className="w-3 h-3 text-[#C76743]" />
                 {item.locationNote}
               </span>
             )}
-            <span className="text-[11px] text-[#886959]">
+            <span className="text-xs text-[#A8988D]">
               {currentIndex + 1} of {items.length}
             </span>
           </div>

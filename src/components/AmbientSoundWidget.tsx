@@ -33,7 +33,7 @@ export const AmbientSoundWidget: React.FC = () => {
           await ctx.resume();
         }
 
-        // Generate 5 seconds of pink/brownish noise loop for warm ambient room tone
+        // Generate 4 seconds of warm low-frequency noise loop for acoustic room tone
         const bufferSize = ctx.sampleRate * 4;
         const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
         const data = buffer.getChannelData(0);
@@ -41,24 +41,23 @@ export const AmbientSoundWidget: React.FC = () => {
         let lastOut = 0.0;
         for (let i = 0; i < bufferSize; i++) {
           const white = Math.random() * 2 - 1;
-          // Brown noise integration for warm acoustic rumble & gentle air
           data[i] = (lastOut + 0.02 * white) / 1.02;
           lastOut = data[i];
-          data[i] *= 1.8; // subtle gain
+          data[i] *= 1.8;
         }
 
         const source = ctx.createBufferSource();
         source.buffer = buffer;
         source.loop = true;
 
-        // Bandpass filter to mimic warm café room acoustics
+        // Lowpass filter for warm café murmur
         const filter = ctx.createBiquadFilter();
         filter.type = 'lowpass';
-        filter.frequency.value = 450; // warm muffled room tone
+        filter.frequency.value = 450;
 
         const gainNode = ctx.createGain();
         gainNode.gain.setValueAtTime(0.001, ctx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.04, ctx.currentTime + 1.2);
+        gainNode.gain.exponentialRampToValueAtTime(0.035, ctx.currentTime + 1.0);
 
         source.connect(filter);
         filter.connect(gainNode);
@@ -71,7 +70,7 @@ export const AmbientSoundWidget: React.FC = () => {
         setIsPlaying(true);
       } else {
         if (gainNodeRef.current && audioCtxRef.current) {
-          gainNodeRef.current.gain.linearRampToValueAtTime(0.0001, audioCtxRef.current.currentTime + 0.5);
+          gainNodeRef.current.gain.linearRampToValueAtTime(0.0001, audioCtxRef.current.currentTime + 0.4);
           setTimeout(() => {
             if (noiseSourceRef.current) {
               try {
@@ -82,7 +81,7 @@ export const AmbientSoundWidget: React.FC = () => {
               }
             }
             setIsPlaying(false);
-          }, 500);
+          }, 400);
         } else {
           setIsPlaying(false);
         }
@@ -98,29 +97,26 @@ export const AmbientSoundWidget: React.FC = () => {
     <div className="fixed bottom-5 right-5 z-40 hidden sm:block">
       <button
         onClick={toggleSound}
-        className={`flex items-center gap-2 px-3.5 py-2 rounded-full border text-xs font-medium tracking-wide shadow-md transition-all duration-300 backdrop-blur-md ${
+        className={`flex items-center gap-2 px-3 py-2 rounded-lg border text-xs font-medium tracking-wide shadow-sm transition-colors backdrop-blur-md ${
           isPlaying
-            ? 'bg-[#211714] text-[#F4EFEA] border-[#C76743] shadow-lg ring-2 ring-[#C76743]/30'
-            : 'bg-[#F4EFEA]/90 hover:bg-[#FBF8F3] text-[#4A362D] border-[#DDD4C6] hover:border-[#4A362D]/40'
+            ? 'bg-[#211714] text-[#F4EFEA] border-[#C76743]'
+            : 'bg-[#FDFBF7]/95 hover:bg-white text-[#4A362D] border-[#DDD4C6]'
         }`}
         title={isPlaying ? 'Pause Dorćol café ambient tone' : 'Play Dorćol café ambient room tone'}
         aria-pressed={isPlaying}
       >
         {isPlaying ? (
           <>
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#C76743] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#C76743]"></span>
-            </span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#C76743] animate-pulse" />
             <Volume2 className="w-3.5 h-3.5 text-[#C76743]" />
-            <span>Café Tone: Active</span>
+            <span>Café Tone: On</span>
           </>
         ) : (
           <>
-            <VolumeX className="w-3.5 h-3.5 opacity-70" />
-            <span className="flex items-center gap-1">
+            <VolumeX className="w-3.5 h-3.5 opacity-60" />
+            <span className="flex items-center gap-1 text-xs">
               <Sparkles className="w-3 h-3 text-[#C76743]" />
-              Ambient Tone
+              Ambient Sound
             </span>
           </>
         )}

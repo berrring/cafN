@@ -24,9 +24,9 @@ export const GalleryPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#FBF8F3] pb-24">
       {/* Editorial Header */}
-      <section className="bg-[#211714] text-[#FDFBF7] py-16 sm:py-20 relative overflow-hidden border-b border-[#33241F]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4 relative z-10">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#33241F] text-[#DDD4C6] text-xs font-medium uppercase tracking-widest">
+      <section className="bg-[#211714] text-[#FDFBF7] py-14 sm:py-18 relative overflow-hidden border-b border-[#33241F]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3 relative z-10">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#33241F] text-[#DDD4C6] text-xs font-medium uppercase tracking-widest">
             <Camera className="w-3.5 h-3.5 text-[#C76743]" />
             <span>Galerija · Visual Archive</span>
           </div>
@@ -34,29 +34,29 @@ export const GalleryPage: React.FC = () => {
             Atmosphere &amp; Space
           </h1>
           <p className="text-sm sm:text-base text-[#DDD4C6] max-w-xl mx-auto leading-relaxed">
-            Light filtering through Dorćol plane trees, porcelain cups, sourdough loaves cooling on oak boards, and the unhurried passing of the afternoon.
+            Morning light through Dorćol plane trees, porcelain tumblers, and freshly baked pastries on oak boards.
           </p>
           <p className="text-xs font-serif italic text-[#C76743]">
-            Click any photograph to launch the high-resolution lightbox view.
+            Click any photograph to open the high-resolution lightbox view.
           </p>
         </div>
       </section>
 
       {/* Filter Category Bar */}
-      <section className="sticky top-[69px] sm:top-[77px] z-30 bg-[#FBF8F3]/95 backdrop-blur-md border-b border-[#EAE3D6] py-4">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-start sm:justify-center overflow-x-auto gap-2 no-scrollbar">
+      <section className="sticky top-[69px] sm:top-[77px] z-30 bg-[#FBF8F3]/95 backdrop-blur-md border-b border-[#EAE3D6] py-3.5 shadow-2xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-start sm:justify-center overflow-x-auto gap-1.5 no-scrollbar">
           {CATEGORIES.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.id)}
-              className={`px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider shrink-0 transition-all duration-200 ${
+              className={`px-3.5 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider shrink-0 transition-colors ${
                 activeCategory === cat.id
-                  ? 'bg-[#211714] text-[#FDFBF7] shadow-sm'
-                  : 'bg-[#EAE3D6]/70 text-[#4A362D] hover:bg-[#DDD4C6]'
+                  ? 'bg-[#211714] text-[#FDFBF7] shadow-xs'
+                  : 'bg-[#EAE3D6] text-[#4A362D] hover:bg-[#DCD2C2]'
               }`}
             >
               <span>{cat.label}</span>
-              <span className="text-[10px] opacity-70 ml-1.5">
+              <span className="text-xs opacity-75 ml-1.5">
                 ({cat.id === 'all' ? GALLERY_ITEMS.length : GALLERY_ITEMS.filter((i) => i.category === cat.id).length})
               </span>
             </button>
@@ -71,37 +71,37 @@ export const GalleryPage: React.FC = () => {
             <div
               key={item.id}
               onClick={() => setSelectedItem(item)}
-              className={`group relative rounded-2xl overflow-hidden bg-[#211714] border border-[#EAE3D6] shadow-xs hover:shadow-xl transition-all duration-300 cursor-pointer ${
+              className={`group relative rounded-xl overflow-hidden bg-[#211714] border border-[#EAE3D6] shadow-xs hover:border-[#C76743]/50 transition-all duration-200 cursor-pointer ${
                 idx % 5 === 0 ? 'sm:col-span-2 lg:col-span-2' : ''
               }`}
             >
-              <div className="relative h-72 sm:h-84 w-full overflow-hidden">
+              <div className="relative h-72 sm:h-80 w-full overflow-hidden">
                 <img
                   src={item.imageUrl}
                   alt={item.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
                 />
 
                 {/* Ambient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#150E0C]/90 via-[#150E0C]/20 to-transparent opacity-80 group-hover:opacity-95 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#150E0C]/90 via-[#150E0C]/25 to-transparent opacity-85 group-hover:opacity-95 transition-opacity duration-200" />
 
                 {/* Top Badge */}
                 <div className="absolute top-3 left-3 flex items-center gap-2">
-                  <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-[#150E0C]/80 backdrop-blur-xs text-[#FDFBF7] border border-[#33241F]">
+                  <span className="px-2.5 py-1 rounded text-xs font-semibold uppercase tracking-wider bg-[#150E0C]/85 text-[#FDFBF7] border border-[#33241F]">
                     {item.category}
                   </span>
                   {item.locationNote && (
-                    <span className="px-2.5 py-1 rounded-full text-[10px] bg-[#150E0C]/70 backdrop-blur-xs text-[#DDD4C6] hidden sm:inline-flex items-center gap-1">
-                      <MapPin className="w-2.5 h-2.5 text-[#C76743]" />
+                    <span className="px-2.5 py-1 rounded text-xs bg-[#150E0C]/75 text-[#DDD4C6] hidden sm:inline-flex items-center gap-1 border border-[#33241F]">
+                      <MapPin className="w-3 h-3 text-[#C76743]" />
                       {item.locationNote}
                     </span>
                   )}
                 </div>
 
-                {/* Expand icon pill */}
-                <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="p-2 rounded-full bg-[#FDFBF7]/90 text-[#211714] shadow-md hover:bg-white">
+                {/* Expand icon */}
+                <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  <div className="p-2 rounded-lg bg-[#FDFBF7]/90 text-[#211714] shadow-md hover:bg-white">
                     <Eye className="w-4 h-4" />
                   </div>
                 </div>
@@ -114,7 +114,7 @@ export const GalleryPage: React.FC = () => {
                   <h3 className="font-serif text-lg sm:text-xl font-medium tracking-tight">
                     {item.title}
                   </h3>
-                  <p className="text-xs text-[#DDD4C6] line-clamp-2 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-[#DDD4C6] line-clamp-2 leading-relaxed">
                     {item.description}
                   </p>
                 </div>
@@ -125,12 +125,12 @@ export const GalleryPage: React.FC = () => {
       </section>
 
       {/* Cultural Atmosphere Note */}
-      <section className="max-w-4xl mx-auto px-4 sm:px-6 mt-16 text-center">
-        <div className="p-8 rounded-3xl bg-[#F4EFEA] border border-[#DDD4C6] space-y-3">
+      <section className="max-w-3xl mx-auto px-4 sm:px-6 mt-16 text-center">
+        <div className="p-8 rounded-xl bg-[#F4EFEA] border border-[#DDD4C6] space-y-2">
           <p className="font-serif text-2xl text-[#211714] italic">
             “Svaka šoljica ima svoj ugao sunca.”
           </p>
-          <p className="text-xs uppercase tracking-widest text-[#886959]">
+          <p className="text-xs uppercase tracking-widest text-[#664C3F]">
             Every cup finds its morning sunbeam at Morrow
           </p>
         </div>

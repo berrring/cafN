@@ -13,7 +13,7 @@ export const PortfolioDisclaimer: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
         <div className="flex items-center gap-2.5 flex-wrap">
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold tracking-wider uppercase bg-[#C76743] text-white">
+          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-semibold tracking-wider uppercase bg-[#C76743] text-white">
             <Info className="w-3 h-3" /> Portfolio Concept
           </span>
           <p className="text-[#DDD4C6] leading-tight">

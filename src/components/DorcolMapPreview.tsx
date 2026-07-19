@@ -123,15 +123,15 @@ export const DorcolMapPreview: React.FC = () => {
 
         {/* Pin Badge Overlay */}
         <div className="absolute top-[125px] left-1/2 -translate-x-[45px] sm:-translate-x-[20px] pointer-events-none">
-          <div className="bg-[#150E0C] text-[#FDFBF7] px-2.5 py-1 rounded-md border border-[#C76743] shadow-lg flex items-center gap-1.5 text-[11px] font-medium whitespace-nowrap">
+          <div className="bg-[#150E0C] text-[#FDFBF7] px-2.5 py-1 rounded-md border border-[#C76743] shadow-md flex items-center gap-1.5 text-xs font-medium whitespace-nowrap">
             <MapPin className="w-3.5 h-3.5 text-[#C76743]" />
             <span>Morrow Coffee (No. 48a)</span>
           </div>
         </div>
 
         {/* Tram Stop Indicator */}
-        <div className="absolute top-[70px] left-[130px] hidden sm:flex items-center gap-1 text-[10px] text-[#A8B99B] bg-[#242A1F]/90 px-2 py-0.5 rounded border border-[#47533E]">
-          <TramFront className="w-3 h-3 text-[#ECF0E8]" />
+        <div className="absolute top-[70px] left-[130px] hidden sm:flex items-center gap-1.5 text-xs text-[#ECF0E8] bg-[#242A1F]/90 px-2.5 py-1 rounded-md border border-[#47533E]">
+          <TramFront className="w-3.5 h-3.5 text-[#ECF0E8]" />
           <span>Tram Stop Cara Dušana (2, 10)</span>
         </div>
       </div>

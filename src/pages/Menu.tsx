@@ -52,37 +52,37 @@ export const MenuPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#FBF8F3] pb-24">
       {/* Editorial Header */}
-      <section className="bg-[#211714] text-[#FDFBF7] py-16 sm:py-20 relative overflow-hidden border-b border-[#33241F]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#33241F] text-[#DDD4C6] text-xs font-medium uppercase tracking-widest">
+      <section className="bg-[#211714] text-[#FDFBF7] py-14 sm:py-18 relative overflow-hidden border-b border-[#33241F]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#33241F] text-[#DDD4C6] text-xs font-medium uppercase tracking-widest">
             <Coffee className="w-3.5 h-3.5 text-[#C76743]" />
             <span>Morrow Kafa &amp; Kuhinja</span>
           </div>
           <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-normal tracking-tight text-[#FDFBF7]">
             Seasonal Menu &amp; Coffee List
           </h1>
-          <p className="text-sm sm:text-base text-[#DDD4C6] max-w-2xl mx-auto leading-relaxed">
-            Every dish begins with regional heirloom pantry items; every coffee is roasted with light Scandinavian precision to celebrate origin character.
+          <p className="text-sm sm:text-base text-[#DDD4C6] max-w-xl mx-auto leading-relaxed">
+            Fresh breakfast plates, long-fermented sourdough pastries, and ethically sourced single-origin coffees.
           </p>
           <p className="text-xs font-serif italic text-[#C76743]">
-            Sve cene su izražene u dinarima (RSD). Kitchen serves hot plates until 16:30 daily.
+            Sve cene su u RSD. Kitchen serves hot plates until 16:30 daily.
           </p>
         </div>
       </section>
 
       {/* Filter and Control Bar */}
-      <section className="sticky top-[69px] sm:top-[77px] z-30 bg-[#FBF8F3]/95 backdrop-blur-md border-b border-[#EAE3D6] py-4 shadow-2xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
+      <section className="sticky top-[69px] sm:top-[77px] z-30 bg-[#FBF8F3]/95 backdrop-blur-md border-b border-[#EAE3D6] py-3.5 shadow-2xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-3.5">
           {/* Main Category Tabs */}
-          <div className="flex items-center justify-start sm:justify-center overflow-x-auto pb-1 sm:pb-0 gap-2 no-scrollbar">
+          <div className="flex items-center justify-start sm:justify-center overflow-x-auto pb-1 sm:pb-0 gap-1.5 no-scrollbar">
             {CATEGORIES.map((cat) => (
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider shrink-0 transition-all duration-200 ${
+                className={`px-3.5 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider shrink-0 transition-colors ${
                   selectedCategory === cat.id
-                    ? 'bg-[#211714] text-[#FDFBF7] shadow-sm'
-                    : 'bg-[#EAE3D6]/70 text-[#4A362D] hover:bg-[#DDD4C6]'
+                    ? 'bg-[#211714] text-[#FDFBF7] shadow-xs'
+                    : 'bg-[#EAE3D6] text-[#4A362D] hover:bg-[#DCD2C2]'
                 }`}
               >
                 <span>{cat.name}</span>
@@ -91,21 +91,21 @@ export const MenuPage: React.FC = () => {
           </div>
 
           {/* Search, Dietary & Currency Controls */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-1">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-0.5">
             {/* Search Input */}
             <div className="relative flex-1 max-w-md">
-              <Search className="w-4 h-4 text-[#886959] absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-[#664C3F] absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Search coffee notes, kajmak, sourdough, tea..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 rounded-xl bg-[#F4EFEA] border border-[#DDD4C6] text-xs text-[#211714] placeholder-[#886959] focus:outline-none focus:border-[#C76743] transition-colors"
+                className="w-full pl-9 pr-4 py-2 rounded-lg bg-white border border-[#DDD4C6] text-xs text-[#211714] placeholder-[#886959] focus:outline-none focus:border-[#C76743] transition-colors"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#886959] hover:text-[#211714]"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#664C3F] hover:text-[#211714]"
                 >
                   Clear
                 </button>
@@ -114,17 +114,17 @@ export const MenuPage: React.FC = () => {
 
             {/* Dietary Tags and EUR toggle */}
             <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0">
-              <span className="text-[11px] uppercase tracking-wider text-[#664C3F] font-semibold hidden md:inline">
+              <span className="text-xs uppercase tracking-wider text-[#4A362D] font-semibold hidden md:inline">
                 Diet:
               </span>
               {DIETARY_FILTERS.map((diet) => (
                 <button
                   key={diet}
                   onClick={() => setSelectedDiet(diet)}
-                  className={`px-3 py-1 rounded-lg text-[11px] font-medium shrink-0 transition-colors ${
+                  className={`px-3 py-1.5 rounded-md text-xs font-medium shrink-0 transition-colors ${
                     selectedDiet === diet
                       ? 'bg-[#C76743] text-white'
-                      : 'bg-[#F4EFEA] text-[#664C3F] hover:bg-[#EAE3D6] border border-[#DDD4C6]'
+                      : 'bg-[#F4EFEA] text-[#4A362D] hover:bg-[#EAE3D6] border border-[#DDD4C6]'
                   }`}
                 >
                   {diet}
@@ -134,7 +134,7 @@ export const MenuPage: React.FC = () => {
               {/* Currency Equivalent Toggle */}
               <button
                 onClick={() => setShowEurEquivalent(!showEurEquivalent)}
-                className={`ml-1 px-3 py-1 rounded-lg text-[11px] font-medium shrink-0 border transition-colors ${
+                className={`ml-1 px-3 py-1.5 rounded-md text-xs font-medium shrink-0 border transition-colors ${
                   showEurEquivalent
                     ? 'bg-[#47533E] text-white border-[#47533E]'
                     : 'bg-[#F4EFEA] text-[#47533E] border-[#DDD4C6] hover:bg-[#EAE3D6]'
@@ -151,35 +151,35 @@ export const MenuPage: React.FC = () => {
       {/* Specialty Brew Bar Spotlight Banner */}
       {(selectedCategory === 'all' || selectedCategory === 'coffee') && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
-          <div className="p-6 rounded-2xl bg-[#EAE3D6] border border-[#DCD2C2] grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+          <div className="p-6 rounded-xl bg-[#EAE3D6] border border-[#DCD2C2] grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
             <div className="space-y-1">
-              <span className="text-[10px] uppercase tracking-widest text-[#C76743] font-bold">
+              <span className="text-xs uppercase tracking-widest text-[#C76743] font-bold">
                 Specialty Brew Bar
               </span>
               <h3 className="font-serif text-xl font-medium text-[#211714]">
                 Extraction Methods
               </h3>
-              <p className="text-xs text-[#664C3F]">
-                Our baristas dial in grind size and water temperature every morning to highlight distinct terroir.
+              <p className="text-xs text-[#4A362D] leading-relaxed">
+                Our baristas dial in grind size and temperature every morning to highlight distinct terroir.
               </p>
             </div>
 
             <div className="md:col-span-2 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-              <div className="p-3 bg-[#FDFBF7] rounded-xl border border-[#DCD2C2]">
+              <div className="p-3 bg-[#FDFBF7] rounded-lg border border-[#DCD2C2]">
                 <p className="font-semibold text-[#211714]">V60 Pour-Over</p>
-                <p className="text-[11px] text-[#664C3F]">Floral, clean &amp; tea-like</p>
+                <p className="text-xs text-[#52433B]">Clean floral &amp; tea-like</p>
               </div>
-              <div className="p-3 bg-[#FDFBF7] rounded-xl border border-[#DCD2C2]">
+              <div className="p-3 bg-[#FDFBF7] rounded-lg border border-[#DCD2C2]">
                 <p className="font-semibold text-[#211714]">Batch Brew</p>
-                <p className="text-[11px] text-[#664C3F]">Smooth, daily micro-lot</p>
+                <p className="text-xs text-[#52433B]">Smooth, daily micro-lot</p>
               </div>
-              <div className="p-3 bg-[#FDFBF7] rounded-xl border border-[#DCD2C2]">
+              <div className="p-3 bg-[#FDFBF7] rounded-lg border border-[#DCD2C2]">
                 <p className="font-semibold text-[#211714]">Cold Drip 16h</p>
-                <p className="text-[11px] text-[#664C3F]">Deep winey chocolate</p>
+                <p className="text-xs text-[#52433B]">Winey &amp; cacao notes</p>
               </div>
-              <div className="p-3 bg-[#FDFBF7] rounded-xl border border-[#DCD2C2]">
+              <div className="p-3 bg-[#FDFBF7] rounded-lg border border-[#DCD2C2]">
                 <p className="font-semibold text-[#211714]">Copper Džezva</p>
-                <p className="text-[11px] text-[#664C3F]">Reimagined tradition</p>
+                <p className="text-xs text-[#52433B]">Traditional ritual</p>
               </div>
             </div>
           </div>
@@ -189,10 +189,10 @@ export const MenuPage: React.FC = () => {
       {/* Menu Cards Grid */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
         {filteredItems.length === 0 ? (
-          <div className="text-center py-20 bg-[#F4EFEA] rounded-2xl border border-[#DDD4C6] p-8 space-y-3">
+          <div className="text-center py-16 bg-[#F4EFEA] rounded-xl border border-[#DDD4C6] p-8 space-y-3">
             <AlertCircle className="w-8 h-8 text-[#C76743] mx-auto" />
             <h3 className="font-serif text-2xl text-[#211714]">No items found</h3>
-            <p className="text-xs text-[#664C3F]">
+            <p className="text-xs text-[#4A362D]">
               Try adjusting your search terms or dietary filters.
             </p>
             <button
@@ -201,7 +201,7 @@ export const MenuPage: React.FC = () => {
                 setSelectedDiet('All');
                 setSearchQuery('');
               }}
-              className="mt-2 px-4 py-2 rounded-full bg-[#211714] text-white text-xs font-semibold"
+              className="mt-2 px-4 py-2 rounded-lg bg-[#211714] text-white text-xs font-semibold"
             >
               Reset Filters
             </button>
@@ -214,10 +214,10 @@ export const MenuPage: React.FC = () => {
               return (
                 <div
                   key={item.id}
-                  className="group bg-[#FDFBF7] rounded-2xl overflow-hidden border border-[#EAE3D6] shadow-xs hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
+                  className="group bg-[#FDFBF7] rounded-xl overflow-hidden border border-[#EAE3D6] shadow-xs hover:border-[#C76743]/50 transition-all duration-200 flex flex-col justify-between"
                 >
                   <div>
-                    {/* Item Image with Price Tag */}
+                    {/* Item Image with Price Badge */}
                     <div className="relative h-52 sm:h-56 overflow-hidden bg-[#211714]">
                       <img
                         src={item.imageUrl}
@@ -227,11 +227,11 @@ export const MenuPage: React.FC = () => {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#150E0C]/60 via-transparent to-transparent" />
 
-                      {/* Price Pill */}
-                      <div className="absolute top-3 right-3 bg-[#150E0C]/90 backdrop-blur-xs text-[#FDFBF7] px-3 py-1.5 rounded-full font-serif font-semibold text-xs border border-[#33241F] shadow-md flex items-center gap-1.5">
+                      {/* Price Badge */}
+                      <div className="absolute top-3 right-3 bg-[#150E0C]/90 text-[#FDFBF7] px-3 py-1 rounded-md font-serif font-semibold text-xs border border-[#33241F] shadow-xs flex items-center gap-1.5">
                         <span>{item.priceRsd} RSD</span>
                         {showEurEquivalent && (
-                          <span className="text-[10px] text-[#D87C58] font-sans font-normal border-l border-[#4A362D] pl-1.5">
+                          <span className="text-xs text-[#D87C58] font-sans font-normal border-l border-[#4A362D] pl-1.5">
                             ≈ €{eurPrice}
                           </span>
                         )}
@@ -242,7 +242,7 @@ export const MenuPage: React.FC = () => {
                         {item.tags?.map((tag) => (
                           <span
                             key={tag}
-                            className={`px-2.5 py-0.5 rounded text-[10px] font-semibold tracking-wide uppercase shadow-xs ${
+                            className={`px-2 py-0.5 rounded text-xs font-semibold tracking-wide uppercase ${
                               tag === 'House Signature'
                                 ? 'bg-[#C76743] text-white'
                                 : 'bg-[#FDFBF7]/90 text-[#211714]'
@@ -261,7 +261,7 @@ export const MenuPage: React.FC = () => {
                           {item.serbianName}
                         </span>
                         {item.calories && (
-                          <span className="text-[11px] text-[#886959]">
+                          <span className="text-xs text-[#664C3F]">
                             {item.calories}
                           </span>
                         )}
@@ -271,28 +271,28 @@ export const MenuPage: React.FC = () => {
                         {item.name}
                       </h3>
 
-                      <p className="text-xs text-[#664C3F] leading-relaxed">
+                      <p className="text-xs sm:text-sm text-[#4A362D] leading-relaxed">
                         {item.description}
                       </p>
 
                       {item.originOrFarm && (
-                        <div className="pt-2 flex items-center gap-1.5 text-[11px] text-[#718364] font-medium">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#718364]" />
+                        <div className="pt-2 flex items-center gap-1.5 text-xs text-[#47533E] font-medium">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#47533E]" />
                           <span>Origin: {item.originOrFarm}</span>
                         </div>
                       )}
                     </div>
                   </div>
 
-                  {/* Card Footer: Allergens & Inspect button */}
-                  <div className="p-5 pt-3 border-t border-[#F4EFEA] flex items-center justify-between text-xs text-[#886959]">
+                  {/* Card Footer */}
+                  <div className="p-5 pt-3 border-t border-[#F4EFEA] flex items-center justify-between text-xs text-[#52433B]">
                     <div className="truncate max-w-[200px]">
                       {item.allergens && item.allergens.length > 0 ? (
-                        <span className="text-[10px] text-[#886959]">
+                        <span className="text-xs text-[#664C3F]">
                           Contains: {item.allergens.join(', ')}
                         </span>
                       ) : (
-                        <span className="text-[10px] text-[#718364]">
+                        <span className="text-xs text-[#47533E]">
                           No common allergens
                         </span>
                       )}
@@ -300,7 +300,7 @@ export const MenuPage: React.FC = () => {
 
                     <button
                       onClick={() => setSelectedItemDetail(item)}
-                      className="text-xs font-semibold text-[#211714] hover:text-[#C76743] inline-flex items-center gap-1"
+                      className="text-xs font-semibold text-[#211714] hover:text-[#C76743] inline-flex items-center gap-1 shrink-0"
                     >
                       <span>Story</span>
                       <ChevronRight className="w-3.5 h-3.5" />
@@ -322,7 +322,7 @@ export const MenuPage: React.FC = () => {
           onClick={() => setSelectedItemDetail(null)}
         >
           <div
-            className="bg-[#FDFBF7] rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl border border-[#EAE3D6] p-6 space-y-4"
+            className="bg-[#FDFBF7] rounded-xl max-w-lg w-full overflow-hidden shadow-2xl border border-[#EAE3D6] p-6 space-y-4"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between">
@@ -336,13 +336,13 @@ export const MenuPage: React.FC = () => {
               </div>
               <button
                 onClick={() => setSelectedItemDetail(null)}
-                className="p-1 rounded-lg text-[#886959] hover:text-[#211714] hover:bg-[#EAE3D6]"
+                className="p-1 rounded text-[#664C3F] hover:text-[#211714] hover:bg-[#EAE3D6]"
               >
                 ✕
               </button>
             </div>
 
-            <div className="rounded-xl overflow-hidden h-48 bg-[#211714]">
+            <div className="rounded-lg overflow-hidden h-48 bg-[#211714]">
               <img
                 src={selectedItemDetail.imageUrl}
                 alt={selectedItemDetail.name}
@@ -355,9 +355,9 @@ export const MenuPage: React.FC = () => {
             </p>
 
             {selectedItemDetail.originOrFarm && (
-              <div className="p-3 rounded-xl bg-[#F4EFEA] border border-[#DDD4C6] text-xs space-y-1">
+              <div className="p-3 rounded-lg bg-[#F4EFEA] border border-[#DDD4C6] text-xs space-y-1">
                 <span className="font-semibold text-[#211714] block">Sourcing &amp; Terroir:</span>
-                <span className="text-[#664C3F]">{selectedItemDetail.originOrFarm}</span>
+                <span className="text-[#4A362D]">{selectedItemDetail.originOrFarm}</span>
               </div>
             )}
 
@@ -365,7 +365,7 @@ export const MenuPage: React.FC = () => {
               <span className="font-serif font-bold text-lg text-[#211714]">
                 {selectedItemDetail.priceRsd} RSD
               </span>
-              <span className="text-[#886959]">
+              <span className="text-[#664C3F]">
                 Category: {selectedItemDetail.category.toUpperCase()}
               </span>
             </div>
@@ -375,29 +375,29 @@ export const MenuPage: React.FC = () => {
 
       {/* Sourcing and Baker's Note */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
-        <div className="p-8 rounded-2xl bg-[#F4EFEA] border border-[#DDD4C6] grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="p-8 rounded-xl bg-[#F4EFEA] border border-[#DDD4C6] grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="space-y-2">
             <h4 className="font-serif text-lg font-semibold text-[#211714]">
               48-Hour Wild Fermentation
             </h4>
-            <p className="text-xs text-[#664C3F] leading-relaxed">
-              Our sourdough uses stoneground heritage grain from small organic Vojvodina millers, naturally fermented with wild yeasts for remarkable crumb and digestibility.
+            <p className="text-xs sm:text-sm text-[#4A362D] leading-relaxed">
+              Our sourdough uses stoneground heritage grain from small Vojvodina millers, naturally fermented with wild yeasts for flavor and easy digestion.
             </p>
           </div>
           <div className="space-y-2">
             <h4 className="font-serif text-lg font-semibold text-[#211714]">
               Valjevo Mountain Pastures
             </h4>
-            <p className="text-xs text-[#664C3F] leading-relaxed">
-              All kajmak and fresh cheeses arrive weekly from family-owned grazing farms near Valjevo, preserving traditional Serbian wooden-vat aging methods.
+            <p className="text-xs sm:text-sm text-[#4A362D] leading-relaxed">
+              All kajmak and fresh cheeses arrive weekly from family-owned grazing farms near Valjevo, crafted with traditional wooden-vat aging methods.
             </p>
           </div>
           <div className="space-y-2">
             <h4 className="font-serif text-lg font-semibold text-[#211714]">
-              Ethical Direct Bean Trade
+              Ethical Direct Bean Sourcing
             </h4>
-            <p className="text-xs text-[#664C3F] leading-relaxed">
-              We pay roasters and origin cooperatives an average of 65% above Fair Trade minimums to ensure living wages and ecological shade-grown farming.
+            <p className="text-xs sm:text-sm text-[#4A362D] leading-relaxed">
+              We work closely with roasters and origin cooperatives, paying sustainable prices to support shade-grown agroforestry and living wages.
             </p>
           </div>
         </div>
