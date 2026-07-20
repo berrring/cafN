@@ -3,11 +3,30 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { CAFE_INFO } from '../data/cafeInfo';
 import { MENU_ITEMS } from '../data/menuData';
+import { useLanguage } from '../context/LanguageContext';
 
 export const Home: React.FC = () => {
   const [activeMenuTab, setActiveMenuTab] = useState<'coffee' | 'breakfast' | 'pastries'>('coffee');
+  const { language, t } = useLanguage();
 
   const featuredItems = MENU_ITEMS.filter((item) => item.category === activeMenuTab).slice(0, 4);
+
+  const getItemName = (item: typeof MENU_ITEMS[0]) => {
+    if (language === 'ru' && item.russianName) return item.russianName;
+    if (language === 'sr' && item.serbianName) return item.serbianName;
+    return item.name;
+  };
+
+  const getItemDesc = (item: typeof MENU_ITEMS[0]) => {
+    if (language === 'ru' && item.russianDescription) return item.russianDescription;
+    if (language === 'sr' && item.serbianDescription) return item.serbianDescription;
+    return item.description;
+  };
+
+  const getSubName = (item: typeof MENU_ITEMS[0]) => {
+    if (language === 'en') return item.serbianName;
+    return item.name;
+  };
 
   return (
     <div className="min-h-screen">
@@ -19,17 +38,15 @@ export const Home: React.FC = () => {
             <div className="lg:col-span-7 space-y-6">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#EAE3D6] text-xs text-[#3D2E26] font-medium tracking-wide">
                 <span className="w-2 h-2 rounded-full bg-[#C76743]" />
-                <span className="font-serif italic">Specialty Coffee &amp; Seasonal Kitchen</span>
-                <span className="text-[#664C3F]">·</span>
-                <span>Dorćol, Belgrade</span>
+                <span className="font-serif italic">{t('hero.badge')}</span>
               </div>
 
               <div className="space-y-4">
                 <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-normal tracking-tight text-[#211714] leading-[1.1] text-balance">
-                  Where Dorćol pauses for <span className="font-serif italic text-[#C76743]">exceptional coffee</span> &amp; honest food.
+                  {t('hero.title_start')} <span className="font-serif italic text-[#C76743]">{t('hero.title_accent')}</span> {t('hero.title_end')}
                 </h1>
                 <p className="text-base sm:text-lg text-[#4A362D] max-w-xl leading-relaxed">
-                  Tucked behind historic cobblestones, Morrow pairs seasonal single-origin coffees with artisanal sourdough, Valjevo mountain kajmak, and Belgrade’s time-honored rhythm of <em className="font-serif text-[#211714] font-medium not-italic underline decoration-[#C76743]/40 underline-offset-4">polako</em>.
+                  {t('hero.desc')}
                 </p>
               </div>
 
@@ -39,7 +56,7 @@ export const Home: React.FC = () => {
                   to="/menu"
                   className="px-6 py-3 rounded-lg bg-[#211714] text-[#FDFBF7] font-semibold text-xs uppercase tracking-wider hover:bg-[#C76743] transition-colors shadow-xs flex items-center gap-2 active:scale-[0.98]"
                 >
-                  <span>Explore Menu</span>
+                  <span>{t('hero.cta_menu')}</span>
                   <ArrowRight className="w-4 h-4" />
                 </Link>
 
@@ -47,12 +64,12 @@ export const Home: React.FC = () => {
                   to="/reservations"
                   className="px-6 py-3 rounded-lg bg-transparent text-[#211714] border border-[#211714] hover:bg-[#EAE3D6] font-semibold text-xs uppercase tracking-wider transition-colors active:scale-[0.98]"
                 >
-                  <span>Book a Table</span>
+                  <span>{t('hero.cta_book')}</span>
                 </Link>
 
                 <div className="flex items-center gap-2 text-xs text-[#47533E] font-medium pl-1">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span>Open today until 21:00</span>
+                  <span>{t('hero.open_badge')}</span>
                 </div>
               </div>
 
@@ -60,10 +77,10 @@ export const Home: React.FC = () => {
               <div className="pt-6 border-t border-[#EAE3D6] max-w-lg">
                 <blockquote className="space-y-1">
                   <p className="text-sm text-[#4A362D] font-serif italic leading-relaxed">
-                    “U Dorćolu se kafa ne pije u hodu. Ona je razgovor, sunčev zrak na staroj cigli i vreme koje pripada samo tebi.”
+                    {t('hero.quote')}
                   </p>
                   <cite className="text-xs uppercase tracking-wider text-[#664C3F] not-italic block font-sans">
-                    — The Morrow Morning Philosophy
+                    {t('hero.quote_author')}
                   </cite>
                 </blockquote>
               </div>
@@ -80,10 +97,10 @@ export const Home: React.FC = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-[#150E0C]/85 via-transparent to-transparent" />
                 <div className="absolute bottom-5 left-5 right-5 text-white">
                   <span className="text-xs uppercase tracking-wider px-2.5 py-1 rounded bg-[#C76743] font-semibold inline-block mb-1.5">
-                    Micro-Lot Brew Bar
+                    {t('hero.brew_bar')}
                   </span>
-                  <p className="font-serif text-lg text-[#FDFBF7]">Single Origin Pour-Over</p>
-                  <p className="text-xs text-[#DDD4C6]">Ethiopia Sidama Bensa &amp; Colombia Pink Bourbon</p>
+                  <p className="font-serif text-lg text-[#FDFBF7]">{t('hero.brew_item')}</p>
+                  <p className="text-xs text-[#DDD4C6]">{t('hero.brew_origins')}</p>
                 </div>
               </div>
             </div>
@@ -95,19 +112,53 @@ export const Home: React.FC = () => {
       <section className="py-12 bg-[#F4EFEA] border-b border-[#EAE3D6]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8">
-            {CAFE_INFO.metrics.map((metric, idx) => (
-              <div key={idx} className="border-l-2 border-[#C76743] pl-4 space-y-1">
-                <span className="font-serif text-3xl sm:text-4xl font-normal text-[#211714]">
-                  {metric.value}
-                </span>
-                <p className="text-xs uppercase tracking-wider font-semibold text-[#3D2E26]">
-                  {metric.label}
-                </p>
-                <p className="text-xs text-[#52433B] leading-normal">
-                  {metric.subtext}
-                </p>
-              </div>
-            ))}
+            <div className="border-l-2 border-[#C76743] pl-4 space-y-1">
+              <span className="font-serif text-3xl sm:text-4xl font-normal text-[#211714]">
+                {CAFE_INFO.metrics[0].value}
+              </span>
+              <p className="text-xs uppercase tracking-wider font-semibold text-[#3D2E26]">
+                {t('metrics.score_label')}
+              </p>
+              <p className="text-xs text-[#52433B] leading-normal">
+                {t('metrics.score_sub')}
+              </p>
+            </div>
+
+            <div className="border-l-2 border-[#C76743] pl-4 space-y-1">
+              <span className="font-serif text-3xl sm:text-4xl font-normal text-[#211714]">
+                {CAFE_INFO.metrics[1].value}
+              </span>
+              <p className="text-xs uppercase tracking-wider font-semibold text-[#3D2E26]">
+                {t('metrics.ferm_label')}
+              </p>
+              <p className="text-xs text-[#52433B] leading-normal">
+                {t('metrics.ferm_sub')}
+              </p>
+            </div>
+
+            <div className="border-l-2 border-[#C76743] pl-4 space-y-1">
+              <span className="font-serif text-3xl sm:text-4xl font-normal text-[#211714]">
+                {CAFE_INFO.metrics[2].value}
+              </span>
+              <p className="text-xs uppercase tracking-wider font-semibold text-[#3D2E26]">
+                {t('metrics.dairy_label')}
+              </p>
+              <p className="text-xs text-[#52433B] leading-normal">
+                {t('metrics.dairy_sub')}
+              </p>
+            </div>
+
+            <div className="border-l-2 border-[#C76743] pl-4 space-y-1">
+              <span className="font-serif text-3xl sm:text-4xl font-normal text-[#211714]">
+                {CAFE_INFO.metrics[3].value}
+              </span>
+              <p className="text-xs uppercase tracking-wider font-semibold text-[#3D2E26]">
+                {t('metrics.brick_label')}
+              </p>
+              <p className="text-xs text-[#52433B] leading-normal">
+                {t('metrics.brick_sub')}
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -118,13 +169,13 @@ export const Home: React.FC = () => {
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
             <div className="space-y-2">
               <span className="text-xs font-semibold tracking-widest uppercase text-[#C76743]">
-                Daily Selections
+                {t('home.daily_badge')}
               </span>
               <h2 className="font-serif text-3xl sm:text-4xl text-[#211714]">
-                From Our Brew Bar &amp; Kitchen Pass
+                {t('home.daily_title')}
               </h2>
               <p className="text-sm text-[#4A362D] max-w-lg leading-relaxed">
-                Seasonal ingredients, wild fermentation, and coffees selected directly from dedicated farmer cooperatives.
+                {t('home.daily_desc')}
               </p>
             </div>
 
@@ -138,7 +189,7 @@ export const Home: React.FC = () => {
                     : 'text-[#4A362D] hover:text-[#211714]'
                 }`}
               >
-                Coffee (Kafa)
+                {t('home.tab_coffee')}
               </button>
               <button
                 onClick={() => setActiveMenuTab('breakfast')}
@@ -148,7 +199,7 @@ export const Home: React.FC = () => {
                     : 'text-[#4A362D] hover:text-[#211714]'
                 }`}
               >
-                Breakfast (Doručak)
+                {t('home.tab_breakfast')}
               </button>
               <button
                 onClick={() => setActiveMenuTab('pastries')}
@@ -158,7 +209,7 @@ export const Home: React.FC = () => {
                     : 'text-[#4A362D] hover:text-[#211714]'
                 }`}
               >
-                Bakery (Pekara)
+                {t('home.tab_pastries')}
               </button>
             </div>
           </div>
@@ -174,7 +225,7 @@ export const Home: React.FC = () => {
                   <div className="relative h-48 overflow-hidden bg-[#211714]">
                     <img
                       src={item.imageUrl}
-                      alt={item.name}
+                      alt={getItemName(item)}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute top-2.5 right-2.5">
@@ -186,13 +237,13 @@ export const Home: React.FC = () => {
 
                   <div className="p-4 space-y-1.5">
                     <p className="text-xs font-serif italic text-[#C76743]">
-                      {item.serbianName}
+                      {getSubName(item)}
                     </p>
                     <h3 className="font-serif text-lg font-medium text-[#211714] group-hover:text-[#C76743] transition-colors leading-snug">
-                      {item.name}
+                      {getItemName(item)}
                     </h3>
                     <p className="text-xs text-[#4A362D] leading-relaxed line-clamp-2">
-                      {item.description}
+                      {getItemDesc(item)}
                     </p>
                   </div>
                 </div>
@@ -203,7 +254,7 @@ export const Home: React.FC = () => {
                     to="/menu"
                     className="font-medium text-[#211714] group-hover:text-[#C76743] inline-flex items-center gap-1 shrink-0"
                   >
-                    View <ArrowRight className="w-3.5 h-3.5" />
+                    {t('home.view_details')} <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
               </div>
@@ -215,7 +266,7 @@ export const Home: React.FC = () => {
               to="/menu"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#211714] text-[#FDFBF7] font-semibold text-xs uppercase tracking-wider hover:bg-[#C76743] transition-colors shadow-xs"
             >
-              <span>Explore Complete 24-Item Menu</span>
+              <span>{t('home.explore_all_menu')}</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -240,22 +291,22 @@ export const Home: React.FC = () => {
                     Gospodar Jevremova 48a
                   </p>
                   <p className="font-serif text-lg text-[#FDFBF7]">
-                    An 1894 textile merchant storehouse revitalized for Belgrade's coffee era.
+                    {t('home.building_title')}
                   </p>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3 text-xs">
                 <div className="p-3.5 rounded-xl bg-[#150E0C] border border-[#33241F]">
-                  <p className="font-serif text-xl text-[#C76743]">Polako</p>
+                  <p className="font-serif text-xl text-[#C76743]">{t('home.polako_box_title')}</p>
                   <p className="text-xs text-[#DDD4C6] mt-1 leading-normal">
-                    Coffee as an experience of presence, not fuel on the run.
+                    {t('home.polako_box_desc')}
                   </p>
                 </div>
                 <div className="p-3.5 rounded-xl bg-[#150E0C] border border-[#33241F]">
-                  <p className="font-serif text-xl text-[#718364]">Lokalno</p>
+                  <p className="font-serif text-xl text-[#718364]">{t('home.lokalno_box_title')}</p>
                   <p className="text-xs text-[#DDD4C6] mt-1 leading-normal">
-                    Valjevo kajmak, Fruška Gora wines, and handmade ceramics.
+                    {t('home.lokalno_box_desc')}
                   </p>
                 </div>
               </div>
@@ -265,19 +316,19 @@ export const Home: React.FC = () => {
             <div className="lg:col-span-7 space-y-5 lg:pl-4">
               <div className="space-y-2">
                 <span className="text-xs font-semibold tracking-widest uppercase text-[#C76743]">
-                  Philosophy &amp; Dorćol Spirit
+                  {t('home.story_badge')}
                 </span>
                 <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal leading-tight text-[#FDFBF7]">
-                  Born from Belgrade's coffee tradition.
+                  {t('home.story_title')}
                 </h2>
               </div>
 
               <p className="text-sm sm:text-base text-[#DDD4C6] leading-relaxed">
-                Centuries ago, the first kafana in Europe opened its doors right here in Belgrade in 1522. Morrow is our contemporary tribute to that legacy — combining specialty roasting with authentic neighborhood warmth.
+                {t('home.story_p1')}
               </p>
 
               <p className="text-sm sm:text-base text-[#C1B49F] leading-relaxed">
-                In our dining hall overlooking the quiet plane trees of Jevremova, every coffee extraction respects the grower, wild sourdough is baked fresh daily, and guests are invited to stay as long as they wish.
+                {t('home.story_p2')}
               </p>
 
               <div className="pt-2">
@@ -285,7 +336,7 @@ export const Home: React.FC = () => {
                   to="/about"
                   className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#C76743] hover:text-[#D87C58] transition-colors"
                 >
-                  <span>Read Our Full Story &amp; Producer Directory</span>
+                  <span>{t('home.story_link')}</span>
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
@@ -300,17 +351,17 @@ export const Home: React.FC = () => {
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
             <div>
               <span className="text-xs font-semibold tracking-widest uppercase text-[#47533E]">
-                Moments &amp; Space
+                {t('home.atmo_badge')}
               </span>
               <h2 className="font-serif text-3xl sm:text-4xl text-[#211714]">
-                A Look Inside Morrow
+                {t('home.atmo_title')}
               </h2>
             </div>
             <Link
               to="/gallery"
               className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#211714] hover:text-[#C76743] transition-colors"
             >
-              <span>Explore Visual Archive</span>
+              <span>{t('home.atmo_link')}</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -357,13 +408,13 @@ export const Home: React.FC = () => {
               <div className="lg:col-span-7 p-8 sm:p-10 space-y-6">
                 <div className="space-y-2">
                   <span className="text-xs font-semibold tracking-widest uppercase text-[#C76743]">
-                    Visit Us in Dorćol
+                    {t('home.visit_badge')}
                   </span>
                   <h3 className="font-serif text-3xl sm:text-4xl text-[#FDFBF7]">
-                    Pull Up a Chair at Morrow
+                    {t('home.visit_title')}
                   </h3>
                   <p className="text-sm text-[#DDD4C6] leading-relaxed">
-                    Walk-ins are always welcomed. If you're joining us for weekend brunch or with a group of friends, we invite you to book ahead.
+                    {t('home.visit_desc')}
                   </p>
                 </div>
 
@@ -374,10 +425,12 @@ export const Home: React.FC = () => {
                       key={idx}
                       className="p-3.5 rounded-lg bg-[#150E0C] border border-[#33241F] flex items-center justify-between text-xs"
                     >
-                      <span className="font-medium text-[#FDFBF7]">{schedule.day}</span>
+                      <span className="font-medium text-[#FDFBF7]">
+                        {idx === 0 ? t('footer.weekdays') : t('footer.weekend')}
+                      </span>
                       <div className="text-right">
-                        <span className="text-[#DDD4C6] block">Coffee: {schedule.coffee}</span>
-                        <span className="text-[#886959] block">Kitchen: {schedule.kitchen}</span>
+                        <span className="text-[#DDD4C6] block">{t('footer.coffee_bar')} {schedule.coffee}</span>
+                        <span className="text-[#A8988D] block">{t('footer.kitchen_pass')} {schedule.kitchen}</span>
                       </div>
                     </div>
                   ))}
@@ -388,13 +441,13 @@ export const Home: React.FC = () => {
                     to="/reservations"
                     className="px-6 py-2.5 rounded-lg bg-[#C76743] text-white font-semibold text-xs uppercase tracking-wider hover:bg-[#D87C58] transition-colors"
                   >
-                    Reserve a Table
+                    {t('home.visit_reserve')}
                   </Link>
                   <Link
                     to="/contact"
                     className="px-6 py-2.5 rounded-lg bg-[#33241F] text-[#FDFBF7] font-semibold text-xs uppercase tracking-wider hover:bg-[#4A362D] transition-colors"
                   >
-                    Location &amp; Directions
+                    {t('home.visit_directions')}
                   </Link>
                 </div>
               </div>
@@ -403,7 +456,7 @@ export const Home: React.FC = () => {
               <div className="lg:col-span-5 bg-[#150E0C] p-8 sm:p-10 border-t lg:border-t-0 lg:border-l border-[#33241F] flex flex-col justify-between space-y-6">
                 <div className="space-y-4">
                   <h4 className="text-xs uppercase tracking-widest text-[#718364] font-semibold">
-                    Address &amp; Neighborhood
+                    {t('home.visit_address_title')}
                   </h4>
                   <div className="space-y-1.5 text-sm text-[#DDD4C6]">
                     <p className="font-serif text-xl text-[#FDFBF7]">
@@ -413,8 +466,8 @@ export const Home: React.FC = () => {
                     <p>{CAFE_INFO.address.city}, {CAFE_INFO.address.country}</p>
                   </div>
 
-                  <div className="pt-2 text-xs text-[#886959] space-y-1">
-                    <p className="font-medium text-[#C1B49F]">Public Transit &amp; Walking:</p>
+                  <div className="pt-2 text-xs text-[#A8988D] space-y-1">
+                    <p className="font-medium text-[#C1B49F]">{t('home.visit_transit_label')}</p>
                     <p className="leading-relaxed">{CAFE_INFO.address.transitNote}</p>
                   </div>
                 </div>
@@ -422,7 +475,7 @@ export const Home: React.FC = () => {
                 <div className="p-3.5 rounded-lg bg-[#211714] border border-[#33241F] text-xs text-[#C1B49F] space-y-1">
                   <p className="font-semibold text-[#FDFBF7]">Portfolio Project Note:</p>
                   <p>
-                    Morrow is a portfolio concept. This address represents a simulated Dorćol setting.
+                    {CAFE_INFO.address.disclaimer}
                   </p>
                 </div>
               </div>

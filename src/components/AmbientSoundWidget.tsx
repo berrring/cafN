@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Volume2, VolumeX, Sparkles } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export const AmbientSoundWidget: React.FC = () => {
+  const { t } = useLanguage();
   const [isPlaying, setIsPlaying] = useState(false);
   const [isSupported, setIsSupported] = useState(true);
   const audioCtxRef = useRef<AudioContext | null>(null);
@@ -109,14 +111,14 @@ export const AmbientSoundWidget: React.FC = () => {
           <>
             <span className="w-1.5 h-1.5 rounded-full bg-[#C76743] animate-pulse" />
             <Volume2 className="w-3.5 h-3.5 text-[#C76743]" />
-            <span>Café Tone: On</span>
+            <span>{t('ambient.active')}</span>
           </>
         ) : (
           <>
             <VolumeX className="w-3.5 h-3.5 opacity-60" />
             <span className="flex items-center gap-1 text-xs">
               <Sparkles className="w-3 h-3 text-[#C76743]" />
-              Ambient Sound
+              {t('ambient.inactive')}
             </span>
           </>
         )}

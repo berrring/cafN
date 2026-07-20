@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
-import { Menu as MenuIcon, X, Calendar, MapPin, Coffee } from 'lucide-react';
+import { Menu as MenuIcon, X, Calendar, MapPin, Coffee, Globe } from 'lucide-react';
 import { CAFE_INFO } from '../data/cafeInfo';
-
-const NAV_LINKS = [
-  { name: 'Home', path: '/', serbian: 'Početna' },
-  { name: 'Menu', path: '/menu', serbian: 'Meni' },
-  { name: 'About', path: '/about', serbian: 'O nama' },
-  { name: 'Gallery', path: '/gallery', serbian: 'Galerija' },
-  { name: 'Reservations', path: '/reservations', serbian: 'Rezervacije' },
-  { name: 'Contact', path: '/contact', serbian: 'Kontakt' },
-];
+import { useLanguage } from '../context/LanguageContext';
+import type { Language } from '../types';
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { language, setLanguage, t } = useLanguage();
+
+  const navLinks = [
+    { name: t('nav.home'), path: '/' },
+    { name: t('nav.menu'), path: '/menu' },
+    { name: t('nav.about'), path: '/about' },
+    { name: t('nav.gallery'), path: '/gallery' },
+    { name: t('nav.reservations'), path: '/reservations' },
+    { name: t('nav.contact'), path: '/contact' },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,12 +28,10 @@ export const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setMobileMenuOpen(false);
   }, [location.pathname]);
 
-  // Prevent background scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
       document.body.style.overflow = 'hidden';
@@ -42,6 +43,12 @@ export const Navbar: React.FC = () => {
     };
   }, [mobileMenuOpen]);
 
+  const languages: { code: Language; label: string }[] = [
+    { code: 'en', label: 'EN' },
+    { code: 'sr', label: 'SR' },
+    { code: 'ru', label: 'RU' },
+  ];
+
   return (
     <header className="sticky top-0 z-40 w-full transition-all duration-300">
       {/* Top Announcement Bar */}
@@ -50,18 +57,39 @@ export const Navbar: React.FC = () => {
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-2 text-[#F4EFEA] font-medium">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              Open today: 07:30 – 21:00
+              {t('nav.open_today')}
             </span>
             <span className="text-[#664C3F]">·</span>
             <span className="flex items-center gap-1.5 text-[#DDD4C6]">
               <Coffee className="w-3.5 h-3.5 text-[#C76743]" />
-              Batch Single Origin: Ethiopia Sidama (Washed)
+              {t('nav.batch')}
             </span>
           </div>
 
-          <div className="flex items-center gap-2 text-[#DDD4C6]">
-            <MapPin className="w-3.5 h-3.5 text-[#C76743]" />
-            <span>Gospodar Jevremova 48a, Dorćol</span>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1.5 text-[#DDD4C6]">
+              <MapPin className="w-3.5 h-3.5 text-[#C76743]" />
+              <span>{t('nav.address')}</span>
+            </div>
+
+            {/* Language Switcher in Top Bar */}
+            <div className="flex items-center gap-1 pl-3 border-l border-[#33241F]">
+              <Globe className="w-3.5 h-3.5 text-[#A8988D] mr-0.5" />
+              {languages.map((lang) => (
+                <button
+                  key={lang.code}
+                  onClick={() => setLanguage(lang.code)}
+                  className={`px-1.5 py-0.5 rounded text-[11px] font-semibold transition-colors ${
+                    language === lang.code
+                      ? 'bg-[#C76743] text-white'
+                      : 'text-[#A8988D] hover:text-[#FDFBF7]'
+                  }`}
+                  aria-label={`Switch to ${lang.label}`}
+                >
+                  {lang.label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -96,14 +124,14 @@ export const Navbar: React.FC = () => {
 
           {/* Desktop Navigation Links */}
           <div className="hidden lg:flex items-center space-x-1">
-            {NAV_LINKS.map((link) => (
+            {navLinks.map((link) => (
               <NavLink
                 key={link.path}
                 to={link.path}
                 className={({ isActive }) =>
                   `px-3.5 py-2 rounded-md text-sm font-medium tracking-wide transition-colors ${
                     isActive
-                      ? 'text-[#211714] font-semibold bg-[#EAE3D6] text-shadow-none'
+                      ? 'text-[#211714] font-semibold bg-[#EAE3D6]'
                       : 'text-[#4A362D] hover:text-[#211714] hover:bg-[#F4EFEA]'
                   }`
                 }
@@ -113,26 +141,35 @@ export const Navbar: React.FC = () => {
             ))}
           </div>
 
-          {/* Right Action CTA */}
+          {/* Right Action CTA & Mobile Language */}
           <div className="hidden sm:flex items-center gap-3">
             <Link
               to="/reservations"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs uppercase tracking-wider font-semibold bg-[#211714] text-[#FBF8F3] hover:bg-[#C76743] transition-colors shadow-xs active:scale-[0.98]"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs uppercase tracking-wider font-semibold bg-[#211714] text-[#FDFBF7] hover:bg-[#C76743] transition-colors shadow-xs active:scale-[0.98]"
             >
               <Calendar className="w-3.5 h-3.5" />
-              <span>Book Table</span>
+              <span>{t('nav.book')}</span>
             </Link>
           </div>
 
-          {/* Mobile Menu Hamburger */}
+          {/* Mobile Right Bar */}
           <div className="flex lg:hidden items-center gap-2">
-            <Link
-              to="/reservations"
-              className="sm:hidden inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold uppercase tracking-wider bg-[#211714] text-[#FBF8F3]"
-            >
-              <Calendar className="w-3.5 h-3.5" />
-              <span>Book</span>
-            </Link>
+            {/* Quick Language Toggle on Mobile */}
+            <div className="flex items-center rounded-md border border-[#DDD4C6] bg-[#F4EFEA] p-0.5 text-xs">
+              {languages.map((lang) => (
+                <button
+                  key={lang.code}
+                  onClick={() => setLanguage(lang.code)}
+                  className={`px-1.5 py-0.5 rounded text-[11px] font-semibold transition-colors ${
+                    language === lang.code
+                      ? 'bg-[#211714] text-white'
+                      : 'text-[#4A362D]'
+                  }`}
+                >
+                  {lang.label}
+                </button>
+              ))}
+            </div>
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -158,14 +195,29 @@ export const Navbar: React.FC = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="space-y-4">
-              <div className="border-b border-[#EAE3D6] pb-3 mb-2">
+              <div className="flex items-center justify-between border-b border-[#EAE3D6] pb-3 mb-2">
                 <span className="text-xs uppercase tracking-widest text-[#47533E] font-semibold">
-                  Morrow Navigacija
+                  {t('nav.mobile_title')}
                 </span>
+                <div className="flex items-center gap-1">
+                  {languages.map((lang) => (
+                    <button
+                      key={lang.code}
+                      onClick={() => setLanguage(lang.code)}
+                      className={`px-2 py-1 rounded text-xs font-semibold ${
+                        language === lang.code
+                          ? 'bg-[#C76743] text-white'
+                          : 'bg-[#EAE3D6] text-[#4A362D]'
+                      }`}
+                    >
+                      {lang.label}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               <div className="flex flex-col space-y-1">
-                {NAV_LINKS.map((link) => (
+                {navLinks.map((link) => (
                   <NavLink
                     key={link.path}
                     to={link.path}
@@ -178,9 +230,6 @@ export const Navbar: React.FC = () => {
                     }
                   >
                     <span className="font-serif text-lg">{link.name}</span>
-                    <span className="text-xs uppercase tracking-wider text-[#718364]">
-                      {link.serbian}
-                    </span>
                   </NavLink>
                 ))}
               </div>
@@ -188,10 +237,10 @@ export const Navbar: React.FC = () => {
               <div className="pt-3">
                 <Link
                   to="/reservations"
-                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-lg bg-[#211714] text-[#FBF8F3] font-semibold tracking-wider uppercase text-xs hover:bg-[#C76743] transition-colors"
+                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-lg bg-[#211714] text-[#FDFBF7] font-semibold tracking-wider uppercase text-xs hover:bg-[#C76743] transition-colors"
                 >
                   <Calendar className="w-4 h-4" />
-                  <span>Reserve a Table in Dorćol</span>
+                  <span>{t('nav.reserve')}</span>
                 </Link>
               </div>
             </div>

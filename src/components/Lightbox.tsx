@@ -1,6 +1,7 @@
 import React, { useEffect, useCallback } from 'react';
 import { X, ChevronLeft, ChevronRight, MapPin, Tag } from 'lucide-react';
 import type { GalleryItem } from '../types';
+import { useLanguage } from '../context/LanguageContext';
 
 interface LightboxProps {
   item: GalleryItem | null;
@@ -10,6 +11,7 @@ interface LightboxProps {
 }
 
 export const Lightbox: React.FC<LightboxProps> = ({ item, items, onClose, onSelect }) => {
+  const { language } = useLanguage();
   const currentIndex = items.findIndex((i) => i.id === item?.id);
 
   const handleNext = useCallback(() => {
@@ -43,11 +45,32 @@ export const Lightbox: React.FC<LightboxProps> = ({ item, items, onClose, onSele
 
   if (!item) return null;
 
+  const itemTitle =
+    language === 'ru'
+      ? item.russianTitle || item.title
+      : language === 'sr'
+      ? item.serbianTitle || item.title
+      : item.title;
+
+  const itemSubtitle =
+    language === 'ru'
+      ? item.serbianTitle
+      : language === 'sr'
+      ? item.title
+      : item.serbianTitle;
+
+  const itemDesc =
+    language === 'ru'
+      ? item.russianDescription || item.description
+      : item.description;
+
+  const ofWord = language === 'ru' ? 'из' : language === 'sr' ? 'od' : 'of';
+
   return (
     <div
       role="dialog"
       aria-modal="true"
-      aria-label={item.title}
+      aria-label={itemTitle}
       className="fixed inset-0 z-50 flex items-center justify-center bg-[#150E0C]/95 backdrop-blur-md p-4 sm:p-6 md:p-10 animate-fade-in"
       onClick={onClose}
     >
@@ -92,7 +115,7 @@ export const Lightbox: React.FC<LightboxProps> = ({ item, items, onClose, onSele
         <div className="relative rounded-xl overflow-hidden shadow-2xl bg-[#211714] border border-[#33241F] max-h-[68vh] flex items-center justify-center">
           <img
             src={item.imageUrl}
-            alt={item.title}
+            alt={itemTitle}
             className="w-auto h-auto max-h-[68vh] max-w-full object-contain"
           />
         </div>
@@ -111,18 +134,18 @@ export const Lightbox: React.FC<LightboxProps> = ({ item, items, onClose, onSele
               </span>
             )}
             <span className="text-xs text-[#A8988D]">
-              {currentIndex + 1} of {items.length}
+              {currentIndex + 1} {ofWord} {items.length}
             </span>
           </div>
 
           <h3 className="font-serif text-xl sm:text-2xl font-medium tracking-tight">
-            {item.title}
+            {itemTitle}
           </h3>
           <p className="text-xs italic font-serif text-[#C76743] mb-1">
-            {item.serbianTitle}
+            {itemSubtitle}
           </p>
           <p className="text-xs sm:text-sm text-[#DDD4C6] leading-relaxed">
-            {item.description}
+            {itemDesc}
           </p>
         </div>
       </div>

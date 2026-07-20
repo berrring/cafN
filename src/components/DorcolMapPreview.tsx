@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { MapPin, Navigation, Copy, Check, TramFront, Compass } from 'lucide-react';
 import { CAFE_INFO } from '../data/cafeInfo';
+import { useLanguage } from '../context/LanguageContext';
 
 export const DorcolMapPreview: React.FC = () => {
+  const { language } = useLanguage();
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -19,7 +21,7 @@ export const DorcolMapPreview: React.FC = () => {
           <div className="flex items-center gap-2">
             <Compass className="w-4 h-4 text-[#C76743]" />
             <span className="text-xs font-semibold tracking-wider uppercase text-[#DDD4C6]">
-              Dorćol Neighborhood Map
+              {language === 'ru' ? 'Карта района Дорчол' : language === 'sr' ? 'Mapa Dorćola' : 'Dorćol Neighborhood Map'}
             </span>
           </div>
           <p className="text-sm font-serif text-[#FDFBF7] mt-0.5">
@@ -30,17 +32,17 @@ export const DorcolMapPreview: React.FC = () => {
         <button
           onClick={handleCopy}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#33241F] hover:bg-[#C76743] text-xs font-medium text-[#FDFBF7] transition-colors"
-          title="Copy fictional address"
+          title={language === 'ru' ? 'Скопировать адрес' : language === 'sr' ? 'Kopiraj adresu' : 'Copy address'}
         >
           {copied ? (
             <>
               <Check className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Address Copied</span>
+              <span>{language === 'ru' ? 'Адрес скопирован' : language === 'sr' ? 'Adresa kopirana' : 'Address Copied'}</span>
             </>
           ) : (
             <>
               <Copy className="w-3.5 h-3.5" />
-              <span>Copy Address</span>
+              <span>{language === 'ru' ? 'Скопировать адрес' : language === 'sr' ? 'Kopiraj adresu' : 'Copy Address'}</span>
             </>
           )}
         </button>
@@ -51,7 +53,11 @@ export const DorcolMapPreview: React.FC = () => {
         {/* Danube River graphic at the top */}
         <div className="absolute top-0 left-0 right-0 h-14 bg-gradient-to-b from-[#2E3C40]/60 to-transparent flex items-center justify-center">
           <span className="text-[10px] tracking-[0.3em] uppercase text-[#718364] font-medium font-serif italic">
-            ~ Danube River (Dunav) — 500m North ~
+            {language === 'ru'
+              ? '~ Река Дунай (Dunav) — 500 м на север ~'
+              : language === 'sr'
+              ? '~ Reka Dunav — 500m severno ~'
+              : '~ Danube River (Dunav) — 500m North ~'}
           </span>
         </div>
 
@@ -140,15 +146,33 @@ export const DorcolMapPreview: React.FC = () => {
       <div className="p-4 bg-[#150E0C] border-t border-[#33241F] grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-[#C1B49F]">
         <div className="flex items-center gap-2">
           <Navigation className="w-4 h-4 text-[#C76743] shrink-0" />
-          <span>6 min walk from Kalemegdan Fortress</span>
+          <span>
+            {language === 'ru'
+              ? '6 мин пешком от Калемегдана'
+              : language === 'sr'
+              ? '6 min hoda od Kalemegdana'
+              : '6 min walk from Kalemegdan Fortress'}
+          </span>
         </div>
         <div className="flex items-center gap-2">
           <TramFront className="w-4 h-4 text-[#718364] shrink-0" />
-          <span>3 min walk from Cara Dušana tram stop</span>
+          <span>
+            {language === 'ru'
+              ? '3 мин от остановки Cara Dušana'
+              : language === 'sr'
+              ? '3 min hoda od stanice Cara Dušana'
+              : '3 min walk from Cara Dušana tram stop'}
+          </span>
         </div>
         <div className="flex items-center gap-2">
           <Compass className="w-4 h-4 text-[#D87C58] shrink-0" />
-          <span>12 min stroll from Knez Mihailova</span>
+          <span>
+            {language === 'ru'
+              ? '12 мин прогулки от Кнез Михайловой'
+              : language === 'sr'
+              ? '12 min šetnje od Knez Mihailove'
+              : '12 min stroll from Knez Mihailova'}
+          </span>
         </div>
       </div>
     </div>

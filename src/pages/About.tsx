@@ -1,8 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Coffee, Sparkles, ArrowRight, ShieldCheck, Leaf, Users } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export const AboutPage: React.FC = () => {
+  const { t } = useLanguage();
+
   return (
     <div className="min-h-screen bg-[#FBF8F3]">
       {/* Editorial Header */}
@@ -10,15 +13,15 @@ export const AboutPage: React.FC = () => {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4 relative z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#33241F] text-[#DDD4C6] text-xs uppercase tracking-widest font-medium">
             <Sparkles className="w-3.5 h-3.5 text-[#C76743]" />
-            <span>Naša Priča · Our Story</span>
+            <span>{t('about.badge')}</span>
           </div>
 
           <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-normal tracking-tight text-[#FDFBF7] leading-tight">
-            Rooted in Dorćol, inspired by the ritual of unhurried coffee.
+            {t('about.hero_title')}
           </h1>
 
           <p className="text-base sm:text-lg text-[#DDD4C6] max-w-2xl mx-auto leading-relaxed">
-            Morrow honors Belgrade’s 500-year café tradition while crafting single-origin coffees and seasonal food with modern culinary care.
+            {t('about.hero_desc')}
           </p>
         </div>
       </section>
@@ -29,19 +32,19 @@ export const AboutPage: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
             <div className="lg:col-span-6 space-y-5">
               <span className="text-xs font-semibold tracking-widest uppercase text-[#C76743]">
-                The Neighborhood
+                {t('about.ch1_badge')}
               </span>
               <h2 className="font-serif text-3xl sm:text-4xl text-[#211714] leading-tight">
-                Where Four Historic Roads Cross in Belgrade
+                {t('about.ch1_title')}
               </h2>
               <p className="text-sm sm:text-base text-[#4A362D] leading-relaxed">
-                The name <em>Dorćol</em> comes from the Turkish <em>dört-yol</em> — the intersection of four trade routes. For centuries, this neighborhood between Kalemegdan Fortress and the Danube River has welcomed craftsmen, writers, merchants, and neighborhood regulars.
+                {t('about.ch1_p1')}
               </p>
               <p className="text-sm sm:text-base text-[#4A362D] leading-relaxed">
-                In 1522, Europe’s first recorded coffeehouse opened in Dorćol, long before coffeehouses arrived in Vienna or Paris. Belgrade has never lost this relationship with coffee: here, it is not a rushed transaction, but a cherished sanctuary of community.
+                {t('about.ch1_p2')}
               </p>
               <div className="p-4 rounded-lg bg-[#F4EFEA] border-l-4 border-[#C76743] text-xs sm:text-sm text-[#3D2E26] italic font-serif">
-                “A Belgrade morning without an hour at the café is not a morning at all; it is a pause that anchors the day.”
+                {t('about.ch1_quote')}
               </div>
             </div>
 
@@ -57,7 +60,7 @@ export const AboutPage: React.FC = () => {
                   <p className="text-xs uppercase tracking-wider text-[#C76743] font-semibold">
                     Old Dorćol Cobblestones
                   </p>
-                  <p className="font-serif text-lg">Gospodar Jevremova in afternoon light</p>
+                  <p className="font-serif text-lg">Gospodar Jevremova</p>
                 </div>
               </div>
             </div>
@@ -70,13 +73,13 @@ export const AboutPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center space-y-3 mb-14">
             <span className="text-xs font-semibold tracking-widest uppercase text-[#47533E]">
-              Our Ethos
+              {t('about.ch2_badge')}
             </span>
             <h2 className="font-serif text-3xl sm:text-4xl text-[#211714]">
-              The Philosophy of Polako (Taking It Slow)
+              {t('about.ch2_title')}
             </h2>
             <p className="text-sm sm:text-base text-[#4A362D] leading-relaxed">
-              In Serbian, <strong className="text-[#211714]">polako</strong> means to take your time. We built Morrow around three simple principles:
+              {t('about.ch2_desc')}
             </p>
           </div>
 
@@ -86,10 +89,10 @@ export const AboutPage: React.FC = () => {
                 <Coffee className="w-5 h-5" />
               </div>
               <h3 className="font-serif text-xl font-medium text-[#211714]">
-                The Ritual of the Cup
+                {t('about.pillar1_title')}
               </h3>
               <p className="text-xs sm:text-sm text-[#4A362D] leading-relaxed">
-                We roast ethically sourced micro-lots lightly to highlight jasmine blossom, candied citrus, and black tea notes.
+                {t('about.pillar1_desc')}
               </p>
             </div>
 
@@ -98,10 +101,10 @@ export const AboutPage: React.FC = () => {
                 <Leaf className="w-5 h-5" />
               </div>
               <h3 className="font-serif text-xl font-medium text-[#211714]">
-                The Seasonal Kitchen
+                {t('about.pillar2_title')}
               </h3>
               <p className="text-xs sm:text-sm text-[#4A362D] leading-relaxed">
-                Honoring regional Balkan staples with care: fresh Valjevo kajmak, Vojvodina spelt grain, Požega plums, and cold-pressed sunflower oil.
+                {t('about.pillar2_desc')}
               </p>
             </div>
 
@@ -110,10 +113,10 @@ export const AboutPage: React.FC = () => {
                 <Users className="w-5 h-5" />
               </div>
               <h3 className="font-serif text-xl font-medium text-[#211714]">
-                The Community Table
+                {t('about.pillar3_title')}
               </h3>
               <p className="text-xs sm:text-sm text-[#4A362D] leading-relaxed">
-                Whether you drop in for a quick morning flat white or linger for two hours on our terrace with a book, you are always welcome.
+                {t('about.pillar3_desc')}
               </p>
             </div>
           </div>
@@ -125,13 +128,13 @@ export const AboutPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="space-y-3 mb-10">
             <span className="text-xs font-semibold tracking-widest uppercase text-[#C76743]">
-              The Team
+              {t('about.team_badge')}
             </span>
             <h2 className="font-serif text-3xl sm:text-4xl text-[#211714]">
-              The People Behind the Craft
+              {t('about.team_title')}
             </h2>
             <p className="text-sm text-[#4A362D] max-w-xl">
-              Fictional characters created for the Morrow portfolio project to embody Belgrade’s creative culinary scene.
+              {t('about.team_sub')}
             </p>
           </div>
 
@@ -145,13 +148,13 @@ export const AboutPage: React.FC = () => {
               />
               <div className="space-y-1.5">
                 <span className="text-xs font-semibold uppercase tracking-wider text-[#C76743]">
-                  Co-Founder &amp; Q-Grader
+                  {t('about.elena_role')}
                 </span>
                 <h3 className="font-serif text-xl font-medium text-[#211714]">
                   Elena Jovanović
                 </h3>
                 <p className="text-xs sm:text-sm text-[#4A362D] leading-relaxed">
-                  After four years roasting in Copenhagen and Berlin, Elena returned to Dorćol to champion light roast African and Central American micro-lots alongside copper-ibrik brews.
+                  {t('about.elena_desc')}
                 </p>
               </div>
             </div>
@@ -165,13 +168,13 @@ export const AboutPage: React.FC = () => {
               />
               <div className="space-y-1.5">
                 <span className="text-xs font-semibold uppercase tracking-wider text-[#47533E]">
-                  Co-Founder &amp; Baker
+                  {t('about.mihailo_role')}
                 </span>
                 <h3 className="font-serif text-xl font-medium text-[#211714]">
                   Mihailo Radović
                 </h3>
                 <p className="text-xs sm:text-sm text-[#4A362D] leading-relaxed">
-                  Trained in European viennoiserie, Mihailo reinterprets Balkan classics into flaky sourdough pastries, natural wild breads, and comforting weekend brunch plates.
+                  {t('about.mihailo_desc')}
                 </p>
               </div>
             </div>
@@ -195,23 +198,23 @@ export const AboutPage: React.FC = () => {
 
             <div className="lg:col-span-7 space-y-5">
               <span className="text-xs font-semibold tracking-widest uppercase text-[#C76743]">
-                Tactile Craft
+                {t('about.craft_badge')}
               </span>
               <h2 className="font-serif text-3xl sm:text-4xl font-normal text-[#FDFBF7]">
-                Every Cup Holds a Dorćol Story
+                {t('about.craft_title')}
               </h2>
               <p className="text-sm sm:text-base text-[#DDD4C6] leading-relaxed">
-                You will not find disposable paper cups on our tables. We collaborated with local ceramics workshop <em>Studio Blato</em> down on Ulica Cara Uroša to throw custom stoneware tumblers and wide rimmed brunch plates.
+                {t('about.craft_p1')}
               </p>
               <p className="text-sm text-[#C1B49F] leading-relaxed">
-                The clay is harvested from Danube riverbed sediments and fired with chalk-white and raw basalt glazes, giving each vessel a distinctive tactile warmth.
+                {t('about.craft_p2')}
               </p>
               <div className="pt-2">
                 <Link
                   to="/gallery"
                   className="px-6 py-2.5 rounded-lg bg-[#C76743] text-white font-semibold text-xs uppercase tracking-wider hover:bg-[#D87C58] transition-colors inline-flex items-center gap-2"
                 >
-                  <span>View Space &amp; Craft Gallery</span>
+                  <span>{t('about.craft_btn')}</span>
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
@@ -226,10 +229,10 @@ export const AboutPage: React.FC = () => {
           <div className="p-5 rounded-xl bg-[#EAE3D6] border border-[#DCD2C2] text-xs text-[#4A362D] space-y-1.5">
             <div className="flex items-center gap-2 font-semibold text-[#211714]">
               <ShieldCheck className="w-4 h-4 text-[#C76743]" />
-              <span>Portfolio Transparency Notice</span>
+              <span>{t('about.disclaimer_title')}</span>
             </div>
             <p className="leading-relaxed">
-              Morrow Coffee &amp; Kitchen is a conceptual web application designed to demonstrate front-end development, UX architecture, responsive typography, and editorial design. The physical venue, founders, and prices are fictional.
+              {t('about.disclaimer_text')}
             </p>
           </div>
         </div>

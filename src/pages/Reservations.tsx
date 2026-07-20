@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Calendar, Clock, MapPin, CheckCircle2, Download } from 'lucide-react';
 import { CAFE_INFO } from '../data/cafeInfo';
 import type { ReservationFormData } from '../types';
+import { useLanguage } from '../context/LanguageContext';
 
 const TIME_SLOTS = [
   '08:30', '09:00', '09:30', '10:00', '10:30', '11:00',
@@ -10,13 +11,35 @@ const TIME_SLOTS = [
 ];
 
 const SEATING_AREAS = [
-  { id: 'main-hall', name: 'Main Brick Hall', desc: 'Preserved 1894 brickwork & oak banquettes' },
-  { id: 'terrace', name: 'Cobblestone Terrace', desc: 'Courtyard breeze under morning sun' },
-  { id: 'barista-counter', name: 'Barista Slow Bar', desc: 'Front row seats to single origin V60s' },
-  { id: 'quiet-nook', name: 'Study Alcove', desc: 'Arched window corner, ideal for reading' },
+  {
+    id: 'main-hall',
+    en: { name: 'Main Brick Hall', desc: 'Preserved 1894 brickwork & oak banquettes' },
+    sr: { name: 'Glavna sala od opeke', desc: 'Očuvana cigla iz 1894. i hrastove klupe' },
+    ru: { name: 'Главный кирпичный зал', desc: 'Кладка 1894 года и дубовые диваны' },
+  },
+  {
+    id: 'terrace',
+    en: { name: 'Cobblestone Terrace', desc: 'Courtyard breeze under morning sun' },
+    sr: { name: 'Kaldrmisana terasa', desc: 'Dvorišni povetarac pod jutarnjim suncem' },
+    ru: { name: 'Терраса на брусчатке', desc: 'Дворик и утреннее солнце' },
+  },
+  {
+    id: 'barista-counter',
+    en: { name: 'Barista Slow Bar', desc: 'Front row seats to single origin V60s' },
+    sr: { name: 'Barista spori bar', desc: 'Mesta u prvom redu za single origin V60' },
+    ru: { name: 'Слоу-бар у бариста', desc: 'Места у стойки заваривания V60' },
+  },
+  {
+    id: 'quiet-nook',
+    en: { name: 'Study Alcove', desc: 'Arched window corner, ideal for reading' },
+    sr: { name: 'Kutak za čitanje', desc: 'Ugao pored lučnog prozora, idealan za knjigu' },
+    ru: { name: 'Уголок у окна', desc: 'Арочное окно, идеальное для чтения' },
+  },
 ] as const;
 
 export const ReservationsPage: React.FC = () => {
+  const { t, language } = useLanguage();
+
   // Tomorrow's date as default
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
@@ -43,18 +66,39 @@ export const ReservationsPage: React.FC = () => {
     timestamp: string;
   } | null>(null);
 
+  const getGuestLabel = (count: number) => {
+    if (language === 'ru') {
+      if (count === 1) return '1 гость';
+      if (count >= 2 && count <= 4) return `${count} гостя`;
+      return `${count} гостей`;
+    }
+    if (language === 'sr') {
+      return count === 1 ? '1 gost' : `${count} gosta`;
+    }
+    return count === 1 ? '1 Guest' : `${count} Guests`;
+  };
+
+  const getAreaObj = (areaId: string) => {
+    return SEATING_AREAS.find((a) => a.id === areaId) || SEATING_AREAS[0];
+  };
+
+  const getAreaName = (areaId: string) => {
+    const area = getAreaObj(areaId);
+    return area[language].name;
+  };
+
   const validate = () => {
     const newErrors: Record<string, string> = {};
-    if (!formData.name.trim()) newErrors.name = 'Full name is required';
+    if (!formData.name.trim()) newErrors.name = language === 'ru' ? 'Введите имя' : language === 'sr' ? 'Unesite ime' : 'Full name is required';
     if (!formData.email.trim() || !formData.email.includes('@')) {
-      newErrors.email = 'Please provide a valid email address';
+      newErrors.email = language === 'ru' ? 'Укажите корректный email' : language === 'sr' ? 'Unesite ispravan email' : 'Please provide a valid email address';
     }
     if (!formData.phone.trim() || formData.phone.length < 6) {
-      newErrors.phone = 'Valid phone number is required';
+      newErrors.phone = language === 'ru' ? 'Укажите номер телефона' : language === 'sr' ? 'Unesite broj telefona' : 'Valid phone number is required';
     }
-    if (!formData.date) newErrors.date = 'Please pick a reservation date';
-    if (!formData.time) newErrors.time = 'Please select a seating time';
-    if (!formData.agreeToPolicy) newErrors.agreeToPolicy = 'Please accept the reservation policy';
+    if (!formData.date) newErrors.date = language === 'ru' ? 'Выберите дату' : language === 'sr' ? 'Izaberite datum' : 'Please pick a reservation date';
+    if (!formData.time) newErrors.time = language === 'ru' ? 'Выберите время' : language === 'sr' ? 'Izaberite vreme' : 'Please select a seating time';
+    if (!formData.agreeToPolicy) newErrors.agreeToPolicy = language === 'ru' ? 'Необходимо согласиться с условиями' : language === 'sr' ? 'Morate prihvatiti pravila' : 'Please accept the reservation policy';
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -71,7 +115,11 @@ export const ReservationsPage: React.FC = () => {
       setConfirmedBooking({
         reference: code,
         data: { ...formData },
-        timestamp: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+        timestamp: new Date().toLocaleDateString(language === 'ru' ? 'ru-RU' : language === 'sr' ? 'sr-RS' : 'en-GB', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+        }),
       });
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }, 600);
@@ -84,17 +132,17 @@ export const ReservationsPage: React.FC = () => {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3 relative z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#33241F] text-[#DDD4C6] text-xs font-medium uppercase tracking-widest">
             <Calendar className="w-3.5 h-3.5 text-[#C76743]" />
-            <span>Rezervacije · Table Booking</span>
+            <span>{t('res.badge')}</span>
           </div>
           <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-normal tracking-tight text-[#FDFBF7]">
-            Reserve Your Table in Dorćol
+            {t('res.title')}
           </h1>
           <p className="text-sm sm:text-base text-[#DDD4C6] max-w-xl mx-auto leading-relaxed">
-            Join us for weekend brunch, morning pour-overs, or a quiet afternoon in our dining hall.
+            {t('res.desc')}
           </p>
           <div className="p-3 rounded-lg bg-[#150E0C] border border-[#33241F] max-w-md mx-auto text-xs text-[#DDD4C6]">
             <p>
-              <strong className="text-[#FDFBF7]">Portfolio Demo Mode:</strong> Submitting simulates a booking confirmation with an interactive voucher. No real booking is placed.
+              {t('res.demo_badge')}
             </p>
           </div>
         </div>
@@ -110,13 +158,13 @@ export const ReservationsPage: React.FC = () => {
                   <CheckCircle2 className="w-7 h-7" />
                 </div>
                 <span className="text-xs font-semibold tracking-wider uppercase text-[#C76743]">
-                  Reservation Request Confirmed (Demo)
+                  {language === 'ru' ? 'Бронирование подтверждено (Демо)' : language === 'sr' ? 'Rezervacija potvrđena (Demo)' : 'Reservation Request Confirmed (Demo)'}
                 </span>
                 <h2 className="font-serif text-3xl text-[#211714]">
-                  Radujemo se vašem dolasku!
+                  {t('res.conf_title')}
                 </h2>
                 <p className="text-xs sm:text-sm text-[#4A362D]">
-                  We look forward to welcoming you to Morrow Coffee &amp; Kitchen.
+                  {t('res.conf_sub')}
                 </p>
               </div>
 
@@ -125,7 +173,7 @@ export const ReservationsPage: React.FC = () => {
                 <div className="p-4 rounded-xl bg-[#F4EFEA] border border-[#DDD4C6] flex items-center justify-between">
                   <div>
                     <span className="text-xs uppercase tracking-wider text-[#664C3F]">
-                      Booking Reference
+                      {t('res.conf_ref')}
                     </span>
                     <p className="font-mono text-xl font-bold text-[#211714]">
                       {confirmedBooking.reference}
@@ -133,38 +181,38 @@ export const ReservationsPage: React.FC = () => {
                   </div>
                   <div className="text-right">
                     <span className="text-xs uppercase tracking-wider text-[#664C3F]">
-                      Party Size
+                      {t('res.v_party')}
                     </span>
                     <p className="font-serif text-xl font-bold text-[#211714]">
-                      {confirmedBooking.data.guests} {confirmedBooking.data.guests === 1 ? 'Guest' : 'Guests'}
+                      {getGuestLabel(confirmedBooking.data.guests)}
                     </p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 text-xs sm:text-sm">
                   <div className="p-3.5 bg-white rounded-lg border border-[#EAE3D6]">
-                    <span className="text-xs text-[#664C3F] block">Date:</span>
+                    <span className="text-xs text-[#664C3F] block">{t('res.label_date').replace('*', '')}:</span>
                     <span className="font-medium text-[#211714]">{confirmedBooking.data.date}</span>
                   </div>
                   <div className="p-3.5 bg-white rounded-lg border border-[#EAE3D6]">
-                    <span className="text-xs text-[#664C3F] block">Time Slot:</span>
+                    <span className="text-xs text-[#664C3F] block">{t('res.label_time').replace('*', '')}:</span>
                     <span className="font-medium text-[#211714]">{confirmedBooking.data.time}</span>
                   </div>
                   <div className="p-3.5 bg-white rounded-lg border border-[#EAE3D6]">
-                    <span className="text-xs text-[#664C3F] block">Guest Name:</span>
+                    <span className="text-xs text-[#664C3F] block">{t('res.v_name')}</span>
                     <span className="font-medium text-[#211714]">{confirmedBooking.data.name}</span>
                   </div>
                   <div className="p-3.5 bg-white rounded-lg border border-[#EAE3D6]">
-                    <span className="text-xs text-[#664C3F] block">Seating Area:</span>
-                    <span className="font-medium text-[#211714] capitalize">
-                      {confirmedBooking.data.area.replace('-', ' ')}
+                    <span className="text-xs text-[#664C3F] block">{t('res.v_seating')}</span>
+                    <span className="font-medium text-[#211714]">
+                      {getAreaName(confirmedBooking.data.area)}
                     </span>
                   </div>
                 </div>
 
                 {confirmedBooking.data.occasion && (
                   <div className="p-3.5 bg-white rounded-lg border border-[#EAE3D6] text-xs">
-                    <span className="text-[#664C3F] block">Occasion:</span>
+                    <span className="text-[#664C3F] block">{t('res.label_occasion')}:</span>
                     <span className="font-medium text-[#211714]">{confirmedBooking.data.occasion}</span>
                   </div>
                 )}
@@ -174,7 +222,13 @@ export const ReservationsPage: React.FC = () => {
               <div className="pt-4 border-t border-[#EAE3D6] text-xs text-[#4A362D] space-y-2">
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4 text-[#C76743] shrink-0" />
-                  <span>Tables are held for 15 minutes past reservation time.</span>
+                  <span>
+                    {language === 'ru'
+                      ? 'Столик сохраняется за вами в течение 15 минут.'
+                      : language === 'sr'
+                      ? 'Stolovi se čuvaju 15 minuta nakon zakazanog vremena.'
+                      : 'Tables are held for 15 minutes past reservation time.'}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-[#47533E] shrink-0" />
@@ -187,14 +241,14 @@ export const ReservationsPage: React.FC = () => {
                   onClick={() => setConfirmedBooking(null)}
                   className="flex-1 py-3 px-4 rounded-lg bg-[#211714] text-[#FDFBF7] font-semibold text-xs uppercase tracking-wider hover:bg-[#C76743] transition-colors text-center"
                 >
-                  Make Another Reservation
+                  {t('res.conf_new_btn')}
                 </button>
                 <button
                   onClick={() => window.print()}
                   className="py-3 px-5 rounded-lg border border-[#211714] text-[#211714] font-semibold text-xs uppercase tracking-wider hover:bg-[#EAE3D6] transition-colors inline-flex items-center justify-center gap-1.5"
                 >
                   <Download className="w-3.5 h-3.5" />
-                  <span>Print Voucher</span>
+                  <span>{t('res.conf_print_btn')}</span>
                 </button>
               </div>
             </div>
@@ -207,10 +261,10 @@ export const ReservationsPage: React.FC = () => {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <h2 className="font-serif text-2xl sm:text-3xl text-[#211714]">
-                    Table Details
+                    {t('res.form_title')}
                   </h2>
                   <p className="text-xs sm:text-sm text-[#4A362D] mt-1">
-                    Select your party size, preferred time, and dining space.
+                    {t('res.form_sub')}
                   </p>
                 </div>
 
@@ -218,7 +272,7 @@ export const ReservationsPage: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-semibold uppercase tracking-wider text-[#3D2E26] mb-1.5">
-                      Date *
+                      {t('res.label_date')}
                     </label>
                     <input
                       type="date"
@@ -233,7 +287,7 @@ export const ReservationsPage: React.FC = () => {
 
                   <div>
                     <label className="block text-xs font-semibold uppercase tracking-wider text-[#3D2E26] mb-1.5">
-                      Number of Guests *
+                      {t('res.label_guests')}
                     </label>
                     <div className="grid grid-cols-6 gap-1.5">
                       {[1, 2, 3, 4, 5, 6].map((num) => (
@@ -257,7 +311,7 @@ export const ReservationsPage: React.FC = () => {
                 {/* Time Slot Picker */}
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-[#3D2E26] mb-1.5">
-                    Preferred Time Slot *
+                    {t('res.label_time')}
                   </label>
                   <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
                     {TIME_SLOTS.map((slot) => (
@@ -281,7 +335,7 @@ export const ReservationsPage: React.FC = () => {
                 {/* Seating Area Selector */}
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-[#3D2E26] mb-2">
-                    Seating Area Preference
+                    {t('res.label_area')}
                   </label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {SEATING_AREAS.map((area) => (
@@ -295,9 +349,11 @@ export const ReservationsPage: React.FC = () => {
                             : 'bg-white text-[#211714] border-[#DDD4C6] hover:border-[#886959]'
                         }`}
                       >
-                        <p className="text-xs sm:text-sm font-semibold font-serif">{area.name}</p>
+                        <p className="text-xs sm:text-sm font-semibold font-serif">
+                          {area[language].name}
+                        </p>
                         <p className={`text-xs mt-0.5 ${formData.area === area.id ? 'text-[#DDD4C6]' : 'text-[#52433B]'}`}>
-                          {area.desc}
+                          {area[language].desc}
                         </p>
                       </button>
                     ))}
@@ -307,18 +363,18 @@ export const ReservationsPage: React.FC = () => {
                 {/* Guest Contact Details */}
                 <div className="pt-4 border-t border-[#EAE3D6] space-y-4">
                   <h3 className="font-serif text-xl text-[#211714]">
-                    Guest Information
+                    {t('res.guest_section')}
                   </h3>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs font-semibold uppercase tracking-wider text-[#3D2E26] mb-1.5">
-                        Full Name *
+                        {t('res.label_name')}
                       </label>
                       <input
                         type="text"
                         required
-                        placeholder="e.g. Ana Petrović"
+                        placeholder={language === 'ru' ? 'например, Анна Петрова' : 'e.g. Ana Petrović'}
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         className="w-full px-3.5 py-2.5 rounded-lg bg-white border border-[#DDD4C6] text-xs sm:text-sm text-[#211714] focus:outline-none focus:border-[#C76743] transition-colors"
@@ -328,7 +384,7 @@ export const ReservationsPage: React.FC = () => {
 
                     <div>
                       <label className="block text-xs font-semibold uppercase tracking-wider text-[#3D2E26] mb-1.5">
-                        Email Address *
+                        {t('res.label_email')}
                       </label>
                       <input
                         type="email"
@@ -345,7 +401,7 @@ export const ReservationsPage: React.FC = () => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs font-semibold uppercase tracking-wider text-[#3D2E26] mb-1.5">
-                        Phone Number *
+                        {t('res.label_phone')}
                       </label>
                       <input
                         type="tel"
@@ -360,11 +416,11 @@ export const ReservationsPage: React.FC = () => {
 
                     <div>
                       <label className="block text-xs font-semibold uppercase tracking-wider text-[#3D2E26] mb-1.5">
-                        Special Occasion (Optional)
+                        {t('res.label_occasion')}
                       </label>
                       <input
                         type="text"
-                        placeholder="e.g. Birthday, Anniversary"
+                        placeholder={language === 'ru' ? 'например, День рождения, Годовщина' : 'e.g. Birthday, Anniversary'}
                         value={formData.occasion}
                         onChange={(e) => setFormData({ ...formData, occasion: e.target.value })}
                         className="w-full px-3.5 py-2.5 rounded-lg bg-white border border-[#DDD4C6] text-xs sm:text-sm text-[#211714] focus:outline-none focus:border-[#C76743] transition-colors"
@@ -374,11 +430,17 @@ export const ReservationsPage: React.FC = () => {
 
                   <div>
                     <label className="block text-xs font-semibold uppercase tracking-wider text-[#3D2E26] mb-1.5">
-                      Dietary Notes or Requests
+                      {t('res.label_diet')}
                     </label>
                     <textarea
                       rows={2}
-                      placeholder="e.g. Bringing a dog, high chair needed, oat milk preference"
+                      placeholder={
+                        language === 'ru'
+                          ? 'например, будем с собакой, нужен детский стульчик, овсяное молоко'
+                          : language === 'sr'
+                          ? 'npr. dolazimo sa psom, potrebna stolica za hranjenje, ovseno mleko'
+                          : 'e.g. Bringing a dog, high chair needed, oat milk preference'
+                      }
                       value={formData.dietaryNotes}
                       onChange={(e) => setFormData({ ...formData, dietaryNotes: e.target.value })}
                       className="w-full px-3.5 py-2.5 rounded-lg bg-white border border-[#DDD4C6] text-xs sm:text-sm text-[#211714] focus:outline-none focus:border-[#C76743] transition-colors"
@@ -396,7 +458,7 @@ export const ReservationsPage: React.FC = () => {
                       className="mt-0.5 rounded border-[#DDD4C6] text-[#C76743] focus:ring-[#C76743]"
                     />
                     <span className="text-xs text-[#4A362D]">
-                      I understand tables are held for 15 minutes, and that this form is a simulated portfolio demonstration.
+                      {t('res.policy_check')}
                     </span>
                   </label>
                   {errors.agreeToPolicy && (
@@ -410,7 +472,7 @@ export const ReservationsPage: React.FC = () => {
                   disabled={isSubmitting}
                   className="w-full py-3.5 px-6 rounded-lg bg-[#211714] text-[#FDFBF7] font-semibold text-xs uppercase tracking-wider hover:bg-[#C76743] transition-colors shadow-xs disabled:opacity-50"
                 >
-                  {isSubmitting ? 'Confirming Demo Booking...' : 'Request Table Reservation'}
+                  {isSubmitting ? t('res.submitting') : t('res.submit_btn')}
                 </button>
               </form>
             </div>
@@ -420,57 +482,57 @@ export const ReservationsPage: React.FC = () => {
               <div className="bg-[#211714] text-[#FDFBF7] rounded-2xl p-6 sm:p-8 border border-[#33241F] shadow-lg sticky top-28 space-y-5">
                 <div>
                   <span className="text-xs font-semibold uppercase tracking-wider text-[#C76743]">
-                    Live Reservation Ticket
+                    {t('res.voucher_badge')}
                   </span>
                   <h3 className="font-serif text-2xl text-[#FDFBF7] mt-1">
-                    Morrow Table Voucher
+                    {t('res.voucher_title')}
                   </h3>
                   <p className="text-xs text-[#DDD4C6] mt-0.5">
-                    Updates automatically as you make your selections.
+                    {t('res.voucher_sub')}
                   </p>
                 </div>
 
                 {/* Slip Details */}
                 <div className="p-4 rounded-xl bg-[#150E0C] border border-[#33241F] space-y-3 text-xs sm:text-sm">
                   <div className="flex items-center justify-between border-b border-[#33241F] pb-2">
-                    <span className="text-[#A8988D]">Venue:</span>
+                    <span className="text-[#A8988D]">{t('res.v_venue')}</span>
                     <span className="font-serif font-medium text-[#FDFBF7]">Morrow Coffee &amp; Kitchen</span>
                   </div>
                   <div className="flex items-center justify-between border-b border-[#33241F] pb-2">
-                    <span className="text-[#A8988D]">Location:</span>
+                    <span className="text-[#A8988D]">{t('res.v_location')}</span>
                     <span className="text-[#DDD4C6]">Dorćol, Belgrade</span>
                   </div>
                   <div className="flex items-center justify-between border-b border-[#33241F] pb-2">
-                    <span className="text-[#A8988D]">Date &amp; Time:</span>
+                    <span className="text-[#A8988D]">{t('res.v_date_time')}</span>
                     <span className="font-semibold text-[#C76743]">
                       {formData.date || 'Pick date'} at {formData.time}
                     </span>
                   </div>
                   <div className="flex items-center justify-between border-b border-[#33241F] pb-2">
-                    <span className="text-[#A8988D]">Party Size:</span>
+                    <span className="text-[#A8988D]">{t('res.v_party')}</span>
                     <span className="text-[#FDFBF7] font-medium">
-                      {formData.guests} {formData.guests === 1 ? 'Guest' : 'Guests'}
+                      {getGuestLabel(formData.guests)}
                     </span>
                   </div>
                   <div className="flex items-center justify-between border-b border-[#33241F] pb-2">
-                    <span className="text-[#A8988D]">Seating:</span>
-                    <span className="capitalize text-[#DDD4C6]">
-                      {formData.area.replace('-', ' ')}
+                    <span className="text-[#A8988D]">{t('res.v_seating')}</span>
+                    <span className="text-[#DDD4C6]">
+                      {getAreaName(formData.area)}
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-[#A8988D]">Guest Name:</span>
+                    <span className="text-[#A8988D]">{t('res.v_name')}</span>
                     <span className="text-[#FDFBF7] font-medium">
-                      {formData.name || 'Your Name'}
+                      {formData.name || (language === 'ru' ? 'Ваше имя' : language === 'sr' ? 'Vaše ime' : 'Your Name')}
                     </span>
                   </div>
                 </div>
 
                 {/* Hospitality Note */}
                 <div className="p-3.5 rounded-lg bg-[#293023]/60 border border-[#47533E] text-xs text-[#ECF0E8] space-y-1">
-                  <p className="font-semibold text-[#A8B99B]">Hospitality Promise:</p>
+                  <p className="font-semibold text-[#A8B99B]">{t('res.promise_title')}</p>
                   <p className="text-xs text-[#DDD4C6] leading-relaxed">
-                    Fresh water and warm hospitality are included with every table. Walk-ins are always welcomed if you find yourself nearby in Dorćol.
+                    {t('res.promise_text')}
                   </p>
                 </div>
               </div>

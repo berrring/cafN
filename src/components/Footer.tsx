@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MapPin, Phone, Mail, ArrowUpRight, CheckCircle2, Heart, Camera } from 'lucide-react';
 import { CAFE_INFO } from '../data/cafeInfo';
+import { useLanguage } from '../context/LanguageContext';
 
 export const Footer: React.FC = () => {
+  const { t, language } = useLanguage();
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 
@@ -32,12 +34,12 @@ export const Footer: React.FC = () => {
             </div>
 
             <p className="text-sm text-[#DDD4C6] leading-relaxed max-w-sm">
-              An independent coffee bar and seasonal kitchen rooted in Belgrade's oldest quarter. Hand-selected single origins, wild sourdough, and the art of unhurried conversation.
+              {t('footer.desc')}
             </p>
 
             <div className="pt-1">
               <div className="inline-block px-3 py-1 rounded-md border border-[#47533E] bg-[#242A1F]/60 text-xs text-[#ECF0E8] font-serif italic">
-                “Polako — gde se kafa ne pije u žurbi.”
+                {t('footer.polako_quote')}
               </div>
             </div>
 
@@ -61,37 +63,37 @@ export const Footer: React.FC = () => {
           {/* Quick Navigation */}
           <div className="lg:col-span-2 space-y-3.5">
             <h4 className="text-xs font-semibold tracking-wider uppercase text-[#FDFBF7]">
-              Navigation
+              {t('footer.nav_title')}
             </h4>
             <ul className="space-y-2 text-sm text-[#DDD4C6]">
               <li>
                 <Link to="/" className="hover:text-[#FDFBF7] transition-colors">
-                  Home (Početna)
+                  {t('nav.home')}
                 </Link>
               </li>
               <li>
                 <Link to="/menu" className="hover:text-[#FDFBF7] transition-colors">
-                  Full Menu (Meni)
+                  {t('nav.menu')}
                 </Link>
               </li>
               <li>
                 <Link to="/about" className="hover:text-[#FDFBF7] transition-colors">
-                  Our Story &amp; Ethos
+                  {t('nav.about')}
                 </Link>
               </li>
               <li>
                 <Link to="/gallery" className="hover:text-[#FDFBF7] transition-colors">
-                  Atmosphere Gallery
+                  {t('nav.gallery')}
                 </Link>
               </li>
               <li>
                 <Link to="/reservations" className="hover:text-[#FDFBF7] transition-colors">
-                  Table Reservations
+                  {t('nav.reservations')}
                 </Link>
               </li>
               <li>
                 <Link to="/contact" className="hover:text-[#FDFBF7] transition-colors">
-                  Location &amp; Inquiries
+                  {t('nav.contact')}
                 </Link>
               </li>
             </ul>
@@ -100,18 +102,18 @@ export const Footer: React.FC = () => {
           {/* Hours & Visiting */}
           <div className="lg:col-span-3 space-y-3.5">
             <h4 className="text-xs font-semibold tracking-wider uppercase text-[#FDFBF7]">
-              Hours &amp; Kitchen
+              {t('footer.hours_title')}
             </h4>
             <div className="space-y-2.5 text-xs text-[#DDD4C6]">
               <div>
-                <p className="font-medium text-[#FDFBF7]">Monday – Friday</p>
-                <p className="text-[#DDD4C6]">Coffee Bar: 07:30 – 21:00</p>
-                <p className="text-[#A8988D]">Kitchen Pass: 07:30 – 16:30</p>
+                <p className="font-medium text-[#FDFBF7]">{t('footer.weekdays')}</p>
+                <p className="text-[#DDD4C6]">{t('footer.coffee_bar')} 07:30 – 21:00</p>
+                <p className="text-[#A8988D]">{t('footer.kitchen_pass')} 07:30 – 16:30</p>
               </div>
               <div>
-                <p className="font-medium text-[#FDFBF7]">Saturday &amp; Sunday</p>
-                <p className="text-[#DDD4C6]">Coffee Bar: 08:30 – 22:00 (Sun till 21:00)</p>
-                <p className="text-[#A8988D]">Weekend Brunch: 08:30 – 17:00</p>
+                <p className="font-medium text-[#FDFBF7]">{t('footer.weekend')}</p>
+                <p className="text-[#DDD4C6]">{t('footer.coffee_bar')} 08:30 – 22:00 ({language === 'ru' ? 'Вск до 21:00' : language === 'sr' ? 'Ned do 21:00' : 'Sun till 21:00'})</p>
+                <p className="text-[#A8988D]">{t('footer.brunch')} 08:30 – 17:00</p>
               </div>
               <div className="pt-1">
                 <p className="flex items-start gap-1.5">
@@ -125,16 +127,16 @@ export const Footer: React.FC = () => {
           {/* Dorćol Letters Newsletter */}
           <div className="lg:col-span-3 space-y-3.5">
             <h4 className="text-xs font-semibold tracking-wider uppercase text-[#FDFBF7]">
-              Dorćol Coffee Letters
+              {t('footer.newsletter_title')}
             </h4>
             <p className="text-xs text-[#DDD4C6] leading-relaxed">
-              Receive periodic notes on seasonal coffee arrivals, baker's specials, and neighborhood stories from Belgrade.
+              {t('footer.newsletter_desc')}
             </p>
 
             {subscribed ? (
               <div className="p-3.5 rounded-lg bg-[#242A1F] border border-[#47533E] text-xs text-[#ECF0E8] flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>Hvala! You are subscribed to our fictional newsletter.</span>
+                <span>{t('footer.newsletter_success')}</span>
               </div>
             ) : (
               <form onSubmit={handleSubscribe} className="space-y-2">
@@ -152,7 +154,7 @@ export const Footer: React.FC = () => {
                   type="submit"
                   className="w-full py-2.5 px-4 rounded-lg bg-[#C76743] text-white text-xs font-medium uppercase tracking-wider hover:bg-[#D87C58] transition-colors"
                 >
-                  Join the List
+                  {t('footer.newsletter_btn')}
                 </button>
               </form>
             )}
@@ -177,17 +179,16 @@ export const Footer: React.FC = () => {
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-[#C76743]" />
                 <h5 className="text-xs uppercase tracking-wider font-semibold text-[#FDFBF7]">
-                  Portfolio Concept Project Notice
+                  {t('footer.disclaimer_title')}
                 </h5>
               </div>
               <p className="text-xs text-[#DDD4C6] max-w-3xl leading-relaxed">
-                {CAFE_INFO.disclaimerText} No commercial enterprise, real reservations, or payment processing exists.
+                {t('footer.disclaimer_text')}
               </p>
             </div>
             <div className="shrink-0 flex items-center gap-1.5 text-xs text-[#A8988D]">
-              <span>Made with care</span>
               <Heart className="w-3 h-3 text-[#C76743] fill-[#C76743]" />
-              <span>for Belgrade's coffee culture</span>
+              <span>{t('footer.made_with')}</span>
             </div>
           </div>
         </div>
@@ -201,7 +202,7 @@ export const Footer: React.FC = () => {
             <span>React &amp; TypeScript</span>
             <span>·</span>
             <Link to="/about" className="hover:text-[#DDD4C6] underline underline-offset-2">
-              Concept Story
+              {t('nav.about')}
             </Link>
           </div>
         </div>

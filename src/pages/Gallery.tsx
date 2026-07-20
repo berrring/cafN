@@ -3,16 +3,18 @@ import { Eye, MapPin, Camera } from 'lucide-react';
 import { GALLERY_ITEMS } from '../data/galleryData';
 import type { GalleryCategory, GalleryItem } from '../types';
 import { Lightbox } from '../components/Lightbox';
+import { useLanguage } from '../context/LanguageContext';
 
-const CATEGORIES: { id: GalleryCategory; label: string; serbian: string }[] = [
-  { id: 'all', label: 'All Photos', serbian: 'Sve fotografije' },
-  { id: 'interior', label: 'Interior & Mood', serbian: 'Enterijer i atmosfera' },
-  { id: 'coffee', label: 'Coffee Bar', serbian: 'Kafa i priprema' },
-  { id: 'kitchen', label: 'Kitchen & Pastry', serbian: 'Kuhinja i pekara' },
-  { id: 'dorcol', label: 'Dorćol Streets', serbian: 'Dorćolski ambijent' },
+const CATEGORIES: { id: GalleryCategory; en: string; sr: string; ru: string }[] = [
+  { id: 'all', en: 'All Photos', sr: 'Sve fotografije', ru: 'Все фотографии' },
+  { id: 'interior', en: 'Interior & Mood', sr: 'Enterijer i atmosfera', ru: 'Интерьер и атмосфера' },
+  { id: 'coffee', en: 'Coffee Bar', sr: 'Kafa i priprema', ru: 'Кофейный бар' },
+  { id: 'kitchen', en: 'Kitchen & Pastry', sr: 'Kuhinja i pekara', ru: 'Кухня и выпечка' },
+  { id: 'dorcol', en: 'Dorćol Streets', sr: 'Dorćolski ambijent', ru: 'Улицы Дорчола' },
 ];
 
 export const GalleryPage: React.FC = () => {
+  const { t, language } = useLanguage();
   const [activeCategory, setActiveCategory] = useState<GalleryCategory>('all');
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
 
@@ -21,6 +23,23 @@ export const GalleryPage: React.FC = () => {
     return GALLERY_ITEMS.filter((item) => item.category === activeCategory);
   }, [activeCategory]);
 
+  const getItemTitle = (item: GalleryItem) => {
+    if (language === 'ru') return item.russianTitle || item.title;
+    if (language === 'sr') return item.serbianTitle || item.title;
+    return item.title;
+  };
+
+  const getItemSubtitle = (item: GalleryItem) => {
+    if (language === 'ru') return item.serbianTitle;
+    if (language === 'sr') return item.title;
+    return item.serbianTitle;
+  };
+
+  const getItemDesc = (item: GalleryItem) => {
+    if (language === 'ru') return item.russianDescription || item.description;
+    return item.description;
+  };
+
   return (
     <div className="min-h-screen bg-[#FBF8F3] pb-24">
       {/* Editorial Header */}
@@ -28,16 +47,16 @@ export const GalleryPage: React.FC = () => {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3 relative z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#33241F] text-[#DDD4C6] text-xs font-medium uppercase tracking-widest">
             <Camera className="w-3.5 h-3.5 text-[#C76743]" />
-            <span>Galerija · Visual Archive</span>
+            <span>{t('gallery.badge')}</span>
           </div>
           <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-normal tracking-tight text-[#FDFBF7]">
-            Atmosphere &amp; Space
+            {t('gallery.title')}
           </h1>
           <p className="text-sm sm:text-base text-[#DDD4C6] max-w-xl mx-auto leading-relaxed">
-            Morning light through Dorćol plane trees, porcelain tumblers, and freshly baked pastries on oak boards.
+            {t('gallery.desc')}
           </p>
           <p className="text-xs font-serif italic text-[#C76743]">
-            Click any photograph to open the high-resolution lightbox view.
+            {t('gallery.click_hint')}
           </p>
         </div>
       </section>
@@ -45,22 +64,25 @@ export const GalleryPage: React.FC = () => {
       {/* Filter Category Bar */}
       <section className="sticky top-[69px] sm:top-[77px] z-30 bg-[#FBF8F3]/95 backdrop-blur-md border-b border-[#EAE3D6] py-3.5 shadow-2xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-start sm:justify-center overflow-x-auto gap-1.5 no-scrollbar">
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
-              className={`px-3.5 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider shrink-0 transition-colors ${
-                activeCategory === cat.id
-                  ? 'bg-[#211714] text-[#FDFBF7] shadow-xs'
-                  : 'bg-[#EAE3D6] text-[#4A362D] hover:bg-[#DCD2C2]'
-              }`}
-            >
-              <span>{cat.label}</span>
-              <span className="text-xs opacity-75 ml-1.5">
-                ({cat.id === 'all' ? GALLERY_ITEMS.length : GALLERY_ITEMS.filter((i) => i.category === cat.id).length})
-              </span>
-            </button>
-          ))}
+          {CATEGORIES.map((cat) => {
+            const label = language === 'ru' ? cat.ru : language === 'sr' ? cat.sr : cat.en;
+            return (
+              <button
+                key={cat.id}
+                onClick={() => setActiveCategory(cat.id)}
+                className={`px-3.5 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider shrink-0 transition-colors ${
+                  activeCategory === cat.id
+                    ? 'bg-[#211714] text-[#FDFBF7] shadow-xs'
+                    : 'bg-[#EAE3D6] text-[#4A362D] hover:bg-[#DCD2C2]'
+                }`}
+              >
+                <span>{label}</span>
+                <span className="text-xs opacity-75 ml-1.5">
+                  ({cat.id === 'all' ? GALLERY_ITEMS.length : GALLERY_ITEMS.filter((i) => i.category === cat.id).length})
+                </span>
+              </button>
+            );
+          })}
         </div>
       </section>
 
@@ -78,7 +100,7 @@ export const GalleryPage: React.FC = () => {
               <div className="relative h-72 sm:h-80 w-full overflow-hidden">
                 <img
                   src={item.imageUrl}
-                  alt={item.title}
+                  alt={getItemTitle(item)}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
                 />
@@ -109,13 +131,13 @@ export const GalleryPage: React.FC = () => {
                 {/* Bottom Captions */}
                 <div className="absolute bottom-4 left-4 right-4 text-[#FDFBF7] space-y-1">
                   <p className="text-xs font-serif italic text-[#C76743]">
-                    {item.serbianTitle}
+                    {getItemSubtitle(item)}
                   </p>
                   <h3 className="font-serif text-lg sm:text-xl font-medium tracking-tight">
-                    {item.title}
+                    {getItemTitle(item)}
                   </h3>
                   <p className="text-xs sm:text-sm text-[#DDD4C6] line-clamp-2 leading-relaxed">
-                    {item.description}
+                    {getItemDesc(item)}
                   </p>
                 </div>
               </div>
@@ -128,10 +150,10 @@ export const GalleryPage: React.FC = () => {
       <section className="max-w-3xl mx-auto px-4 sm:px-6 mt-16 text-center">
         <div className="p-8 rounded-xl bg-[#F4EFEA] border border-[#DDD4C6] space-y-2">
           <p className="font-serif text-2xl text-[#211714] italic">
-            “Svaka šoljica ima svoj ugao sunca.”
+            {t('gallery.quote')}
           </p>
           <p className="text-xs uppercase tracking-widest text-[#664C3F]">
-            Every cup finds its morning sunbeam at Morrow
+            {t('gallery.quote_sub')}
           </p>
         </div>
       </section>

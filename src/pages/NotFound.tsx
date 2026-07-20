@@ -1,8 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Coffee, ArrowLeft } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export const NotFoundPage: React.FC = () => {
+  const { language } = useLanguage();
+
   return (
     <div className="min-h-[70vh] flex items-center justify-center bg-[#FBF8F3] px-4 py-20">
       <div className="max-w-md w-full text-center space-y-6">
@@ -12,13 +15,17 @@ export const NotFoundPage: React.FC = () => {
 
         <div className="space-y-2">
           <span className="text-xs uppercase tracking-widest text-[#886959] font-semibold">
-            Greška 404 · Page Not Found
+            {language === 'ru' ? 'Ошибка 404 · Страница не найдена' : language === 'sr' ? 'Greška 404 · Stranica nije pronađena' : 'Error 404 · Page Not Found'}
           </span>
           <h1 className="font-serif text-4xl text-[#211714]">
-            Lost in the Dorćol Alleys?
+            {language === 'ru' ? 'Заблудились на улочках Дорчола?' : language === 'sr' ? 'Zalutali u dorćolskim uličicama?' : 'Lost in the Dorćol Alleys?'}
           </h1>
           <p className="text-sm text-[#664C3F] leading-relaxed">
-            The page you are looking for has either moved or evaporated like morning steam over an espresso cup.
+            {language === 'ru'
+              ? 'Страница, которую вы ищете, переместилась или растворилась, как утренний пар над чашкой эспрессо.'
+              : language === 'sr'
+              ? 'Stranica koju tražite je premeštena ili je isparila kao jutarnja para iz šoljice espresa.'
+              : 'The page you are looking for has either moved or evaporated like morning steam over an espresso cup.'}
           </p>
         </div>
 
@@ -28,7 +35,9 @@ export const NotFoundPage: React.FC = () => {
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#211714] text-[#FDFBF7] font-semibold text-xs uppercase tracking-wider hover:bg-[#C76743] transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Return to Morrow Home</span>
+            <span>
+              {language === 'ru' ? 'Вернуться на главную' : language === 'sr' ? 'Povratak na početnu' : 'Return to Morrow Home'}
+            </span>
           </Link>
         </div>
       </div>

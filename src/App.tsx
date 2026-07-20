@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { LanguageProvider } from './context/LanguageContext';
 import { PortfolioDisclaimer } from './components/PortfolioDisclaimer';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
@@ -25,35 +26,37 @@ const ScrollToTop: React.FC = () => {
 
 export const App: React.FC = () => {
   return (
-    <BrowserRouter>
-      <ScrollToTop />
-      <div className="min-h-screen flex flex-col bg-[#FBF8F3] text-[#211714]">
-        {/* Concept project banner */}
-        <PortfolioDisclaimer />
+    <LanguageProvider>
+      <BrowserRouter>
+        <ScrollToTop />
+        <div className="min-h-screen flex flex-col bg-[#FBF8F3] text-[#211714]">
+          {/* Concept project banner */}
+          <PortfolioDisclaimer />
 
-        {/* Navigation */}
-        <Navbar />
+          {/* Navigation */}
+          <Navbar />
 
-        {/* Page Content */}
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/menu" element={<MenuPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/gallery" element={<GalleryPage />} />
-            <Route path="/reservations" element={<ReservationsPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </main>
+          {/* Page Content */}
+          <main className="flex-grow">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/menu" element={<MenuPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/gallery" element={<GalleryPage />} />
+              <Route path="/reservations" element={<ReservationsPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </main>
 
-        {/* Ambient sound synthesizer for café atmosphere */}
-        <AmbientSoundWidget />
+          {/* Ambient sound synthesizer for café atmosphere */}
+          <AmbientSoundWidget />
 
-        {/* Global Footer */}
-        <Footer />
-      </div>
-    </BrowserRouter>
+          {/* Global Footer */}
+          <Footer />
+        </div>
+      </BrowserRouter>
+    </LanguageProvider>
   );
 };
 
